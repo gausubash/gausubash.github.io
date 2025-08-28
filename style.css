@@ -61,7 +61,7 @@ nav.scrolled {
 }
 
 .nav-container {
-    max-width: auto;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -123,6 +123,7 @@ nav.scrolled .nav-links a {
     text-align: center;
     position: relative;
 }
+
 
 .hero-content {
     max-width: 800px;
