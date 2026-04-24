@@ -1,237 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Subash Gautam | AI & Robotics Portfolio</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MindMap Education Services - Professional STEM tutoring for Year 7-10, robotics education, and academic mentoring across Australia." />
+  <title>MindMap Education Services | STEM Tutoring & Robotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1628;
+      --navy2: #0f2040;
+      --blue: #1a3a6b;
+      --sky: #2196f3;
+      --sky2: #42a5f5;
+      --teal: #00bcd4;
+      --green: #4caf50;
+      --white: #ffffff;
+      --light: #f0f5ff;
+      --muted: #7a8fa8;
+      --text: #1a2b45;
+      --max: 1200px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', Arial, sans-serif; color: var(--text); background: #fff; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+    .container { width: min(92%, var(--max)); margin: 0 auto; }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 16px rgba(0,0,0,.07);
+    }
+    .nav {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0; gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--sky), var(--teal));
+      display: grid; place-items: center;
+      font-weight: 900; font-size: 1.2rem; color: #fff;
+    }
+    .brand-text { font-weight: 700; font-size: 1.1rem; color: var(--navy); line-height: 1.2; }
+    .brand-text span { display: block; font-weight: 400; font-size: .8rem; color: var(--muted); }
+    nav ul { list-style: none; display: flex; gap: 28px; flex-wrap: wrap; }
+    nav a { color: var(--muted); font-size: .95rem; font-weight: 500; transition: color .2s; }
+    nav a:hover { color: var(--sky); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--sky), var(--teal));
+      color: #fff !important; padding: 10px 20px;
+      border-radius: 10px; font-weight: 700 !important;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 50%, #0d2d5a 100%);
+      color: #fff; padding: 90px 0 70px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(33,150,243,.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; position: relative; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 999px;
+      background: rgba(33,150,243,.15); border: 1px solid rgba(33,150,243,.3);
+      color: var(--sky2); font-size: .88rem; font-weight: 600; margin-bottom: 22px;
+    }
+    .hero-badge::before { content: '⚡'; }
+    h1 { font-size: clamp(2.2rem, 4.5vw, 3.8rem); line-height: 1.1; font-weight: 800; margin-bottom: 20px; }
+    h1 span { color: var(--sky2); }
+    .hero-lead { font-size: 1.1rem; color: rgba(255,255,255,.7); max-width: 52ch; margin-bottom: 30px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+    .btn { display: inline-block; padding: 14px 26px; border-radius: 12px; font-weight: 700; transition: .2s ease; }
+    .btn.primary { background: linear-gradient(135deg, var(--sky), var(--teal)); color: #fff; box-shadow: 0 4px 16px rgba(33,150,243,.4); }
+    .btn.secondary { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); color: #fff; }
+    .btn:hover { transform: translateY(-2px); }
+    .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+    .stat { text-align: left; }
+    .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--sky2); }
+    .stat-label { font-size: .85rem; color: rgba(255,255,255,.55); }
+    .hero-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 24px; padding: 28px;
+      backdrop-filter: blur(4px);
+    }
+    .hero-card h3 { font-size: 1.1rem; margin-bottom: 18px; color: rgba(255,255,255,.9); }
+    .pill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pill {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: 14px;
+    }
+    .pill .pill-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .pill strong { display: block; font-size: .92rem; color: #fff; margin-bottom: 4px; }
+    .pill span { font-size: .82rem; color: rgba(255,255,255,.5); }
+
+    /* SECTIONS */
+    section { padding: 72px 0; }
+    .section-label { font-size: .85rem; font-weight: 700; color: var(--sky); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--navy); margin-bottom: 12px; }
+    .section-sub { color: var(--muted); max-width: 68ch; margin-bottom: 36px; font-size: 1rem; }
+
+    /* SERVICES */
+    .services { background: var(--light); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; }
+    .service-card {
+      background: #fff; border-radius: 20px; padding: 28px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.07);
+      border: 1px solid rgba(0,0,0,.05);
+      transition: .25s ease;
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+    .service-icon {
+      width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center;
+      font-size: 1.6rem; margin-bottom: 18px;
+    }
+    .service-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .service-card p { color: var(--muted); font-size: .95rem; }
+
+    /* YEAR 7-10 */
+    .year710 { background: #fff; }
+    .year710-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .year710-visual {
+      background: linear-gradient(135deg, var(--navy), #164e9f);
+      border-radius: 24px; padding: 36px; color: #fff;
+    }
+    .year710-visual h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 16px; }
+    .year710-visual p { color: rgba(255,255,255,.7); margin-bottom: 22px; }
+    .subject-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .subject-pill {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+      border-radius: 10px; padding: 10px 14px; font-size: .9rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .check-list { list-style: none; }
+    .check-list li { padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,.07); display: flex; align-items: flex-start; gap: 12px; color: var(--muted); font-size: .96rem; }
+    .check-list li::before { content: '✓'; color: var(--sky); font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+
+    /* APPROACH */
+    .approach { background: var(--light); }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+    .step-card {
+      background: #fff; border-radius: 20px; padding: 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.05);
+      position: relative;
+    }
+    .step-num {
+      font-size: 3rem; font-weight: 900;
+      color: rgba(33,150,243,.12); line-height: 1;
+      margin-bottom: 14px;
+    }
+    .step-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .step-card p { color: var(--muted); font-size: .93rem; }
+
+    /* ABOUT */
+    .about { background: #fff; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 16px; }
+    .highlight-box {
+      background: linear-gradient(135deg, var(--navy), #1a4a90);
+      color: #fff; border-radius: 20px; padding: 30px;
+    }
+    .highlight-box h3 { font-size: 1.15rem; margin-bottom: 14px; }
+    .highlight-list { list-style: none; }
+    .highlight-list li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: .94rem; color: rgba(255,255,255,.8); display: flex; align-items: center; gap: 10px; }
+    .highlight-list li::before { content: '→'; color: var(--sky2); }
+
+    /* CONTACT */
+    .contact { background: var(--light); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 32px; }
+    .contact-info h3 { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+    .contact-info p { color: var(--muted); margin-bottom: 20px; }
+    .info-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+    .info-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .info-text strong { display: block; color: var(--navy); font-size: .95rem; }
+    .info-text span { color: var(--muted); font-size: .9rem; }
+    .contact-form { background: #fff; border-radius: 20px; padding: 32px; box-shadow: 0 2px 20px rgba(0,0,0,.07); }
+    .contact-form h3 { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 22px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: .88rem; font-weight: 600; color: var(--text); }
+    input, textarea, select {
+      padding: 13px 16px; border-radius: 10px;
+      border: 1.5px solid #dde3ef;
+      font: inherit; color: var(--text); background: #fff;
+      outline: none; transition: border .2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--sky); }
+    textarea { min-height: 130px; resize: vertical; }
+    .form-submit { margin-top: 6px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.6); font-size: .92rem; padding: 32px 0;
+    }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .footer-brand { font-weight: 700; color: rgba(255,255,255,.9); }
+
+    @media (max-width: 900px) {
+      .hero-grid, .services-grid, .year710-grid, .steps-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .pill-grid, .form-row, .subject-grid { grid-template-columns: 1fr 1fr; }
+      nav ul { gap: 16px; }
+    }
+    @media (max-width: 520px) {
+      .pill-grid, .form-row, .subject-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">
-              <img src="photos/logo_trans.png" alt="logo subash" width="50px">
-            </a>
-            
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#portfolio">Work</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#hobbies">Hobbies</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <!-- <li><a href="resume-pdf.html">Resume</a></li> Added Resume tab -->
-                <li><a href="resume.pdf" target="_blank">Resume</a></li>
-            </ul>
-        </div>
+<!-- HEADER -->
+<header>
+  <div class="container nav">
+    <a class="brand" href="#home">
+      <div class="logo">M</div>
+      <div class="brand-text">MindMap Education Services <span>STEM • Robotics • Mentoring</span></div>
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#year7to10">Year 7–10</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav-cta">Book Now</a></li>
+      </ul>
     </nav>
+  </div>
+</header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Subash Gautam</h1>
-            <h2>AI & Robotics Engineer</h2>
-            <p>Developing intelligent systems that bridge the gap between artificial intelligence and real-world applications. Specializing in computer vision, machine learning, and autonomous robotics.</p>
-            <!-- <a href="#portfolio" class="cta-button">View My Work</a> -->
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-badge">Australia's STEM Education Services</div>
+      <h1>Empowering learners from <span>Year 7</span> to higher education.</h1>
+      <p class="hero-lead">Professional STEM tutoring, robotics learning, and academic mentoring designed to build real knowledge, confidence, and future-ready skills.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="#contact">Book a Free Consultation</a>
+        <a class="btn secondary" href="#services">Explore Services</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">Year 7–10</div><div class="stat-label">STEM Tutoring</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Online Delivery</div></div>
+        <div class="stat"><div class="stat-num">PhD</div><div class="stat-label">Expert Guidance</div></div>
+      </div>
+    </div>
+    <aside class="hero-card">
+      <h3>Our core focus areas</h3>
+      <div class="pill-grid">
+        <div class="pill"><div class="pill-icon">🔢</div><strong>Mathematics</strong><span>Year 7–10 STEM maths support</span></div>
+        <div class="pill"><div class="pill-icon">🤖</div><strong>Robotics</strong><span>Automation and systems thinking</span></div>
+        <div class="pill"><div class="pill-icon">🧪</div><strong>Science</strong><span>Biology, chemistry, physics</span></div>
+        <div class="pill"><div class="pill-icon">🎓</div><strong>Higher Ed</strong><span>University mentoring</span></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-label">What we offer</div>
+    <h2 class="section-title">Education services for every stage</h2>
+    <p class="section-sub">Flexible, professional support that adapts to where you are in your learning journey — from secondary school through to postgraduate study.</p>
+    <div class="services-grid">
+      <article class="service-card">
+        <div class="service-icon" style="background:#e3f2fd;">📐</div>
+        <h3>STEM Tutoring (Year 7–10)</h3>
+        <p>Structured support in mathematics, science, and problem-solving for secondary students, delivered online across Australia.</p>
+      </article>
+      <article class="service-card">
+        <div class="service-icon" style="background:#e8f5e9;">🤖</div>
+        <h3>Robotics & Mechatronics</h3>
+        <p>Hands-on learning in automation, mechatronics, sensors, control systems, and robotics engineering concepts.</p>
+      </article>
+      <article class="service-card">
+        <div class="service-icon" style="background:#fff3e0;">🎯</div>
+        <h3>Academic Mentoring</h3>
+        <p>Personalised guidance for university students — assignment support, study planning, and higher-education pathways.</p>
+      </article>
+      <article class="service-card">
+        <div class="service-icon" style="background:#f3e5f5;">💻</div>
+        <h3>Coding & Computational Thinking</h3>
+        <p>Python, programming basics, and algorithm development for students at all levels including school and university.</p>
+      </article>
+      <article class="service-card">
+        <div class="service-icon" style="background:#e0f7fa;">🔬</div>
+        <h3>Engineering Foundations</h3>
+        <p>Core engineering principles, physics, and applied science for students preparing for higher-education STEM courses.</p>
+      </article>
+      <article class="service-card">
+        <div class="service-icon" style="background:#fce4ec;">📈</div>
+        <h3>Exam & Assessment Support</h3>
+        <p>Targeted revision, exam strategy, and practice sessions tailored to STEM subjects for secondary and tertiary students.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- YEAR 7-10 -->
+<section class="year710" id="year7to10">
+  <div class="container">
+    <div class="section-label">Specialised tutoring</div>
+    <h2 class="section-title">Year 7–10 STEM tutoring</h2>
+    <p class="section-sub">Designed specifically for secondary students who want stronger results and a deeper understanding of STEM subjects.</p>
+    <div class="year710-grid">
+      <div class="year710-visual">
+        <h3>Subjects we cover</h3>
+        <p>Aligned with Australian curriculum standards across all secondary year levels.</p>
+        <div class="subject-grid">
+          <div class="subject-pill">📐 Mathematics</div>
+          <div class="subject-pill">⚗️ Chemistry</div>
+          <div class="subject-pill">🔭 Physics</div>
+          <div class="subject-pill">🧬 Biology</div>
+          <div class="subject-pill">💻 Coding</div>
+          <div class="subject-pill">🤖 Robotics</div>
         </div>
-    </section>
+      </div>
+      <div>
+        <ul class="check-list">
+          <li>Flexible online sessions via Zoom, tailored to each student's level and goals.</li>
+          <li>Curriculum-aligned content to directly support school assessment.</li>
+          <li>Clear explanation of difficult concepts with real-world examples.</li>
+          <li>Regular progress reviews so students and parents can track improvement.</li>
+          <li>Robotics-inspired activities that keep learners curious and engaged.</li>
+          <li>Support from a PhD-qualified educator in mechatronics and engineering.</li>
+        </ul>
+        <a class="btn primary" href="#contact" style="margin-top:24px;display:inline-block;">Enquire about Year 7–10 tutoring</a>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- APPROACH -->
+<section class="approach" id="approach">
+  <div class="container">
+    <div class="section-label">How we work</div>
+    <h2 class="section-title">Our approach</h2>
+    <p class="section-sub">A clear, student-centred method designed to build lasting understanding and confidence.</p>
+    <div class="steps-grid">
+      <article class="step-card">
+        <div class="step-num">01</div>
+        <h3>Understand your goals</h3>
+        <p>We start by understanding the student's level, learning gaps, and specific goals before designing any program.</p>
+      </article>
+      <article class="step-card">
+        <div class="step-num">02</div>
+        <h3>Build a clear plan</h3>
+        <p>A structured, personalised learning plan is created to guide sessions and keep progress on track.</p>
+      </article>
+      <article class="step-card">
+        <div class="step-num">03</div>
+        <h3>Grow with confidence</h3>
+        <p>Through regular sessions, feedback, and practice, students build genuine understanding and strong academic results.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about">
-                <div class="about-content">
-                    <div class="about-image">
-                        <img src="photos/Graduation_photo.png" alt="photo" class="circle-image">
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-text">
+      <div class="section-label">Who we are</div>
+      <h2 class="section-title">About MindMap Education Services</h2>
+      <p>MindMap Education Services is a professional Australian education services provider offering STEM tutoring, robotics learning, and academic mentoring for students from Year 7 through to university level.</p>
+      <p>Our services are delivered fully online, making expert academic support accessible to students across Melbourne, Brisbane, and all of Australia.</p>
+      <p>Our educator holds a PhD in mechatronics engineering, with extensive experience in robotics, STEM education, and research mentoring. We are passionate about helping students connect ideas and build genuine confidence in STEM.</p>
+    </div>
+    <div class="highlight-box">
+      <h3>Why choose MindMap</h3>
+      <ul class="highlight-list">
+        <li>PhD-qualified educator in mechatronics and engineering</li>
+        <li>Broad support from Year 7 to postgraduate level</li>
+        <li>STEM and robotics-specialised knowledge</li>
+        <li>Online-first and flexible across all of Australia</li>
+        <li>Personalised programs tailored to each student</li>
+        <li>Professional, credible, and results-focused</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-                    </div>
-                    <div class="about-text">
-                        <h3>AI & Robotics Engineer</h3>
-                        <p>With a passion for cutting-edge technology, I specialize in developing intelligent systems that can perceive, learn, and interact with the world around them.</p>
-                        <p>My expertise spans computer vision algorithms, machine learning models, autonomous robotics, and embedded electronics - creating solutions that push the boundaries of what's possible.</p>
-                        <p>From neural networks that can recognize complex patterns to robots that navigate autonomously, I bring AI concepts to life through practical, real-world applications.</p>
-                    </div>
-                </div>
-            </div>
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-label">Get in touch</div>
+    <h2 class="section-title">Book a consultation</h2>
+    <p class="section-sub">Whether you need Year 7–10 STEM tutoring, robotics learning, or academic mentoring — reach out and we'll match you with the right program.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Contact details</h3>
+        <p>We offer a free initial consultation to understand your needs and recommend the best program for you.</p>
+        <div class="info-item">
+          <div class="info-icon">✉️</div>
+          <div class="info-text"><strong>Email</strong><span>mindmapeducationservices@gmail.com</span></div>
         </div>
-    </section>
-
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section">
-        <div class="container">
-            <h2 class="section-title">My Work</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/switches.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/cert.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/routers.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>IPv6 Deployment on Campus Network<br> (Jul 2018 - Oct 2018) </h3>
-                        <p>
-                            This project focused on deploying IPv6 across a campus network to address the limitations of IPv4 and prepare for future demands. The transition involved implementing a dual-stack system where IPv4 and IPv6 coexisted, upgrading network devices, and configuring services like DNS and DHCP to support IPv6. The deployment aimed to expand address space, enhance security, and ensure the network was scalable and future-proof. Comprehensive testing and training were conducted to ensure a smooth transition, resulting in a modernised network infrastructure supporting the growing number of devices and emerging technologies.
-                        </p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/gw1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/gw2.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Gravitational Water Vortex Power Plant Pilot Project<br> (June 2016 - July 2016)</h3>
-                        <p>The gravitational water vortex power plant is an emerging technology in the context of low-head hydropower, providing a suitable option for rural electrification. There is an opportunity for power generation in remote villages where it is difficult and economically not viable to offer the national power grid. Its simple design also allows it to be fabricated in local introductory workshops, allowing the design to be replicated worldwide. Thus, this project can act as an exemplar project for further improvements in the design of the gravitational water vortex power plant, which is a stepping stone for promoting the production of “green energy” by offering new solutions to existing problems through technical innovations.  </p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/drone1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/drone.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/drone2.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Drone with video surveillance system and payload delivery and drop mechanism <br>(Jan 2015 - Feb 2015)</h3>
-                        <p>This project focuses on developing a versatile drone with a video surveillance system and a payload delivery and drop mechanism. The drone is designed to perform real-time aerial monitoring using a cloud-based IP camera, making it ideal for security and disaster management applications. Additionally, it features a robust payload delivery system that allows for the transportation and precise dropping of items, such as medical supplies or equipment, to targeted locations. By integrating these two functions into a single platform, the project aims to create a cost-effective, efficient solution for complex operations requiring surveillance and logistics capabilities.</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/mppt1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/mppt2.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/mppt3.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Maximum Power Point Tracker with Solar Prioritizer In Photovoltaic Application (Nov 2013 - Feb 2014)</h3>
-                        <p>The global use of solar photovoltaic systems is accelerating rapidly due to the ever-decreasing cost and improved cell efficiency. The variation in solar irradiance, weather conditions, and temperature causes solar cells' non-linear output V-I characteristics. An efficient maximum power point tracker is needed to get maximum power from the solar array instantaneously. This study has implemented the incremental conductance MPPT algorithm in hardware and compared the result with a software model using MATLAB/SIMULINK. This algorithm automatically changes the converter's duty cycle connected to the solar panel so that the panel voltage becomes equal to the voltage equivalent to the maximum power point at any level of insolation, temperature or load conditions. It was found that the software-modelled MPPT algorithm increased the PV output by 38 %, while it was 33% in hardware implementation. The prioritizer embedded in the system optimises the use of solar power rather than the utility grid.</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/robot1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/robot2.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/robot3.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Line and wall following robot with obstacle detection<br>(Aug 2013 - Oct 2013)</h3>
-                        <p> A line following a robot is a fundamental concept of an autonomous vehicle that follows a predefined path, which can be a white or black stripe with a distinctive background. The path may also be designed to be magnetic, so the sensor should be able to detect magnetic fields. In our project, a White line with 2.5cm width is used with a black floor. Using a line array with five sensors and a built-in comparator provides enough information to track the white line and smooth the movement precisely. The Arduino Mega Development board provides enough input pins to connect lines, obstacle/wall sensors and motors. The PID algorithm is implemented to control the robot's movement as smoothly as possible by tuning the algorithm appropriately. There are myriad applications for robots where there is limited access for humans and risk to human beings. Also, there is a tremendous possibility of autonomous vehicles with different kinds of techniques like cameras, Laser, Magnetic tracks, etc, considering safety. </p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/comp1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/comp2.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>National Robotics Competition (Theme: Navigate rough terrain and raise flag)<br>(Apr 2013 – May 2013)</h3>
-                        <p>The start-to-finish track where robots had to travel was hurdles, sand, pebbles, mud, and water, which represent the journey of a robot from Terai through hills and the destination at Mount Everest. The final part was to raise the flag. Robot “Nepali Keto” completed the track within two minutes and raised the flag 3.9m High. </p>
-                    </div>
-                </div>
-            </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-text"><strong>Location</strong><span>Australia (Online delivery nationwide)</span></div>
         </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="section">
-        <div class="container">
-            <h2 class="section-title">Skills & Expertise</h2>
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Machine Learning</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Computer Vision</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Robotics</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Electronics</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Python/TensorFlow</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Embedded Systems</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Data Science</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Deep Learning</h3>
-                </div>
-            </div>
+        <div class="info-item">
+          <div class="info-icon">💻</div>
+          <div class="info-text"><strong>Delivery</strong><span>Online via Zoom — flexible scheduling</span></div>
         </div>
-    </section>
-
-        <!-- hobbies Section -->
-    <section id="hobbies" class="section">
-        <div class="container">
-            <h2 class="section-title">Beyond professional life</h2>
-            <div class="hobbies-grid">
-                <div class="hobbie-item">
-                    <div class="hobbie-image">
-                        <!-- <img src="photos/drone.png" alt="drone" width="auto" height="auto"> -->
-                    </div>
-                    <h3>Drone Flying</h3>
-
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>3D Printing</h3>
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>Cycling</h3>
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>Electronics</h3>
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>Photography</h3>
-                </div>
-            </div>
+        <div class="info-item">
+          <div class="info-icon">🎓</div>
+          <div class="info-text"><strong>Levels</strong><span>Year 7–10, VCE/QCE, University, Postgraduate</span></div>
         </div>
-    </section>
+      </div>
+      <div class="contact-form">
+        <h3>Send an enquiry</h3>
+        <!-- Web3Forms integration — replace YOUR_ACCESS_KEY_HERE with your key from web3forms.com -->
+        <form id="enquiryForm" novalidate>
+          <input type="hidden" name="access_key" value="ab839e99-b650-4bdb-a7f8-8bd4b9d172fd" />
+          <input type="hidden" name="subject" value="New Enquiry — MindMap Education Services" />
+          <input type="hidden" name="from_name" value="MindMap Education Services" />
+          <input type="hidden" name="redirect" value="false" />
+          <div class="form-row">
+            <div class="form-group"><label for="fname">First name</label><input id="fname" name="fname" type="text" placeholder="Your first name" required /></div>
+            <div class="form-group"><label for="lname">Last name</label><input id="lname" name="lname" type="text" placeholder="Your last name" required /></div>
+          </div>
+          <div class="form-group"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="your@email.com" required /></div>
+          <div class="form-group">
+            <label for="service">Service needed</label>
+            <select id="service" name="service" required>
+              <option value="">Select a service...</option>
+              <option>Year 7–10 STEM Tutoring</option>
+              <option>Robotics &amp; Mechatronics</option>
+              <option>Academic Mentoring</option>
+              <option>Coding &amp; Computational Thinking</option>
+              <option>Engineering Foundations</option>
+              <option>Exam &amp; Assessment Support</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell us about your learning goals or what support you need..." required></textarea></div>
+          <div id="formMsg" style="display:none;padding:12px 16px;border-radius:10px;font-size:.92rem;margin-bottom:8px;"></div>
+          <div class="form-submit"><button class="btn primary" type="submit" id="submitBtn" style="width:100%;text-align:center;">Submit Enquiry</button></div>
+        </form>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <!-- <h2 class="section-title">Let's Work Together</h2> -->
-            <div class="contact">
-                <h3>Let's Build the Future Together</h3>
-                <p>Ready to collaborate on cutting-edge AI and robotics projects? Let's discuss how we can push the boundaries of technology.</p>
-                <div class="contact-links">
-                    <a href="https://www.linkedin.com/in/subashgautam/" class="contact-link">LinkedIn</a>
-                    <a href="https://github.com/gausubash" class="contact-link">GitHub</a>
-                    <a href="https://scholar.google.com/citations?user=LixjYDwAAAAJ&hl=en" class="contact-link">Research Papers</a>
-                </div>
-            </div>
-        </div>
-    </section>
+        <script>
+          document.getElementById('enquiryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('submitBtn');
+            var msg = document.getElementById('formMsg');
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>© 2025 Subash Gautam</p>
-        </div>
-    </footer>
-  <script src="scripts.js"></script>
+            var fname   = document.getElementById('fname').value.trim();
+            var lname   = document.getElementById('lname').value.trim();
+            var email   = document.getElementById('email').value.trim();
+            var service = document.getElementById('service').value;
+            var message = document.getElementById('message').value.trim();
+
+            if (!fname || !lname || !email || !service || !message) {
+              msg.style.display = 'block';
+              msg.style.background = '#fff0f0';
+              msg.style.border = '1px solid #f5c6cb';
+              msg.style.color = '#b00020';
+              msg.textContent = 'Please fill in all fields before submitting.';
+              return;
+            }
+
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            var formData = new FormData(this);
+            // Override subject with student details
+            formData.set('subject', 'New Enquiry: ' + service + ' — ' + fname + ' ' + lname);
+
+            try {
+              var response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+              });
+              var data = await response.json();
+
+              if (data.success) {
+                msg.style.display = 'block';
+                msg.style.background = '#f0fff4';
+                msg.style.border = '1px solid #a3d9b0';
+                msg.style.color = '#1a6632';
+                msg.textContent = '✓ Thank you! Your enquiry has been sent. We will get back to you shortly.';
+                btn.textContent = 'Enquiry Sent ✓';
+                this.reset();
+              } else {
+                throw new Error('Submission failed');
+              }
+            } catch(err) {
+              msg.style.display = 'block';
+              msg.style.background = '#fff0f0';
+              msg.style.border = '1px solid #f5c6cb';
+              msg.style.color = '#b00020';
+              msg.textContent = 'Something went wrong. Please email us directly at mindmapeducationservices@gmail.com';
+              btn.textContent = 'Submit Enquiry';
+              btn.disabled = false;
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-brand">MindMap Education Services</div>
+    <div>STEM • Robotics • Mechatronics • Academic Mentoring</div>
+    <div>© 2026 MindMap Education Services. All rights reserved.</div>
+  </div>
+</footer>
+
 </body>
 </html>
