@@ -384,6 +384,7 @@
     const is3d = heroStage.classList.contains('hero__showcase-main--3d');
     heroStage.className = `hero__showcase-main hero__showcase-main--robot hero-stage--${name}`;
     if (is3d) heroStage.classList.add('hero__showcase-main--3d');
+    heroStage.classList.add('hero-stage--show');
     syncPayloadMount(name);
     window.dispatchEvent(new CustomEvent('hero-arm-stage', { detail: { stage: name } }));
   }
@@ -450,9 +451,18 @@
     await waitArm(420);
   }
 
+  function isHeroInView() {
+    if (!heroStage) return false;
+    const rect = heroStage.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight || 1;
+    const visiblePx = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+    return visiblePx > Math.min(vh * 0.12, 80);
+  }
+
   async function runHeroRobotCycle() {
     if (!heroStage || heroCycleRunning) return;
     heroCycleRunning = true;
+    window.__heroCycleActive = true;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reducedMotion) {
@@ -474,7 +484,7 @@
   }
 
   if (heroStage) {
-    let heroVisible = false;
+    let heroVisible = isHeroInView();
     let hero3dResolved = false;
 
     const heroPoseTeach = new URLSearchParams(window.location.search).has('heroTeach')
@@ -491,27 +501,39 @@
     function markHero3dResolved() {
       if (hero3dResolved) return;
       hero3dResolved = true;
+      heroVisible = heroVisible || isHeroInView();
       tryStartHeroCycle();
     }
 
     function tryStartHeroCycle() {
       if (heroPoseTeach) return;
+      heroVisible = heroVisible || isHeroInView();
       if (!heroVisible || !hero3dResolved || heroCycleRunning) return;
       runHeroRobotCycle();
     }
 
     const heroRobotObs = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
+      if (entries.some((entry) => entry.isIntersecting)) {
         heroVisible = true;
         tryStartHeroCycle();
-        heroRobotObs.disconnect();
       }
-    }, { threshold: 0.25 });
+    }, { threshold: [0, 0.08, 0.2] });
     heroRobotObs.observe(heroStage);
 
     window.addEventListener('hero-robot-3d-ready', markHero3dResolved);
+    window.addEventListener('hero-start-cycle', () => {
+      hero3dResolved = true;
+      heroVisible = heroVisible || isHeroInView();
+      tryStartHeroCycle();
+    });
 
     if (isHero3dReady()) markHero3dResolved();
+
+    requestAnimationFrame(() => {
+      heroVisible = heroVisible || isHeroInView();
+      if (isHero3dReady()) markHero3dResolved();
+      else tryStartHeroCycle();
+    });
   }
 
   const heroVideoSlot = document.getElementById('hero-video-slot');

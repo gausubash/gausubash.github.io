@@ -1410,11 +1410,12 @@ function reportHero3dFailure(reason) {
 }
 
 function markReady(stage) {
-  stage?.classList.add('hero__showcase-main--3d');
+  stage?.classList.add('hero__showcase-main--3d', 'hero-stage--show');
   const wrap = document.getElementById(WRAP_ID);
   if (wrap) wrap.dataset.ready = 'true';
   window.__heroRobot3dReady = true;
   window.dispatchEvent(new CustomEvent('hero-robot-3d-ready'));
+  window.dispatchEvent(new CustomEvent('hero-start-cycle'));
 }
 
 function armDurationMs() {
@@ -2213,7 +2214,7 @@ function frameRobot(model, camera, viewport = {}, visualScale = 1, options = {})
   dist *= profile.cameraFraming * profile.cameraPullback * heroCameraFramingMult;
 
   let lookY = lookPoint.y;
-  const lookX = lookPoint.x;
+  let lookX = lookPoint.x;
   const lookZ = lookPoint.z;
   let camX = lookX;
   let camY = lookPoint.y + dist * profile.cameraHeightRatio;
@@ -2982,18 +2983,33 @@ function initHeroRobot3D() {
     proxy.style.top = `${(-effectorProjected.y * 0.5 + 0.5) * height}px`;
   }
 
+  let loopStarted = false;
+
+  function sceneNeedsAnimation() {
+    if (window.__heroCycleActive) return true;
+    if (visible) return true;
+    if (activeTween) return true;
+    if (photoPulseTween) return true;
+    const travel = treadmillRig?.userData?.beltTravel;
+    return Boolean(travel && travel.mode !== 'idle');
+  }
+
   function animate() {
-    cancelAnimationFrame(rafId);
-    if (!visible) return;
-    rafId = requestAnimationFrame(animate);
-    TWEEN.update();
-    const feed = tickBeltFeed(treadmillRig, beltPhoto);
-    if (feed.texDelta !== 0 && treadmillRig?.userData.beltTexture) {
-      scrollBeltTextureOffset(treadmillRig.userData.beltTexture, feed.texDelta);
-    }
-    updateEffectorProxy();
-    updateScenePositionReadouts();
-    renderer.render(scene, camera);
+    if (loopStarted) return;
+    loopStarted = true;
+    const tick = () => {
+      rafId = requestAnimationFrame(tick);
+      if (!sceneNeedsAnimation()) return;
+      TWEEN.update();
+      const feed = tickBeltFeed(treadmillRig, beltPhoto);
+      if (feed.texDelta !== 0 && treadmillRig?.userData.beltTexture) {
+        scrollBeltTextureOffset(treadmillRig.userData.beltTexture, feed.texDelta);
+      }
+      updateEffectorProxy();
+      updateScenePositionReadouts();
+      if (visible) renderer.render(scene, camera);
+    };
+    tick();
   }
 }
 
