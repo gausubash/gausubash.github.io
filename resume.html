@@ -8,14 +8,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="design-tokens.css">
-  <link rel="stylesheet" href="resume.css">
+  <link rel="stylesheet" href="design-tokens.css?v=80">
+  <link rel="stylesheet" href="resume.css?v=2">
 </head>
 <body>
   <div class="resume-bg" aria-hidden="true"></div>
 
   <header class="resume-topbar">
-    <a href="index.html" class="resume-topbar__back">← Back to portfolio</a>
+    <a href="index.html" class="resume-topbar__back">
+      <span class="resume-topbar__mark" aria-hidden="true">SG</span>
+      <span>Back to portfolio</span>
+    </a>
     <div class="resume-topbar__actions">
       <button class="btn-sm" id="print-resume" type="button">Print / Save PDF</button>
       <a href="index.html#epilogue" class="btn-sm btn-sm--fill">Contact me</a>
@@ -48,14 +51,21 @@
 
     <main class="resume-main">
 
-      <header class="resume-hero reveal">
+      <header class="resume-hero reveal visible">
         <div class="resume-hero__photo">
           <img src="photos/Graduation.png" alt="Subash Gautam"
                onerror="this.src='photos/Convocation.JPG'">
         </div>
-        <div>
+        <div class="resume-hero__body">
+          <p class="resume-hero__eyebrow">Interactive CV · Melbourne</p>
           <h1>Subash <span>Gautam</span></h1>
           <p class="resume-hero__role">Research Engineer · PhD Mechatronics</p>
+          <ul class="resume-hero__metrics" aria-label="Career highlights">
+            <li><strong>5+</strong> yrs research</li>
+            <li><strong>4</strong> RCIM papers</li>
+            <li><strong>1</strong> patent</li>
+            <li><strong>PhD</strong> RMIT × CSIRO</li>
+          </ul>
           <div class="resume-hero__tags">
             <span>Digital Twin</span>
             <span>4D Reconstruction</span>

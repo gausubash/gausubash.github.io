@@ -397,7 +397,7 @@
     const dur = Math.round(armDuration() * 0.85);
     const base = 'translate(-50%, -58%) rotateX(var(--photo-level-x, 0deg))';
     const showScale = 1.08;
-    const peak = showScale * 5;
+    const peak = showScale * 3;
     heroPayload.style.transition = `transform ${dur}ms cubic-bezier(0.65, 0, 0.35, 1)`;
     heroPayload.style.transform = `${base} scale(${peak})`;
     heroPayload.style.zIndex = '20';
@@ -498,6 +498,10 @@
         || stage?.classList.contains('hero__showcase-main--3d');
     }
 
+    function isHeroDemoReady() {
+      return isHero3dReady() || window.__heroRobotCssFallback === true;
+    }
+
     function markHero3dResolved() {
       if (hero3dResolved) return;
       hero3dResolved = true;
@@ -527,11 +531,11 @@
       tryStartHeroCycle();
     });
 
-    if (isHero3dReady()) markHero3dResolved();
+    if (isHeroDemoReady()) markHero3dResolved();
 
     requestAnimationFrame(() => {
       heroVisible = heroVisible || isHeroInView();
-      if (isHero3dReady()) markHero3dResolved();
+      if (isHeroDemoReady()) markHero3dResolved();
       else tryStartHeroCycle();
     });
   }

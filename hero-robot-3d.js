@@ -148,23 +148,29 @@ const HERO_LAYOUT_PROFILES = Object.fromEntries(
   ]),
 );
 
-/** Authoritative widescreen tune (matches hero-teach-overrides.json). */
-Object.assign(HERO_LAYOUT_PROFILES.widescreen.landscape, bakeLayoutProfile({
-  robotSizeFactor: 0.77,
-  frameBias: 1.22,
-  cameraHeightRatio: 0.32,
-  cameraDepthRatio: 0.96,
-  cameraFraming: 1.13,
-  cameraPullback: 1.78,
-  screenShiftPx: -200,
-  fov: 35,
-  padding: 1.16,
+/** Authoritative widescreen tune — copied to every tier/layout until per-breakpoint tuning. */
+const WIDESCREEN_LAYOUT_TUNE = {
+  robotSizeFactor: 0.53,
+  frameBias: 0.13,
+  cameraHeightRatio: 1.04,
+  cameraDepthRatio: 1.1,
+  cameraFraming: 2,
+  cameraPullback: 0.59,
+  screenShiftPx: 165,
+  fov: 20,
+  padding: 1.02,
   sceneYawDeg: 0,
-  scenePushZ: 8.34,
-  robotOffsetX: -3.44,
-  robotOffsetY: 0,
-  robotOffsetZ: 1.9,
-}));
+  scenePushZ: -6.18,
+  robotOffsetX: -1.76,
+  robotOffsetY: 0.01,
+  robotOffsetZ: 7.8,
+};
+const bakedWidescreenLayout = bakeLayoutProfile(WIDESCREEN_LAYOUT_TUNE);
+for (const tier of Object.keys(HERO_LAYOUT_PROFILES)) {
+  for (const layout of Object.keys(HERO_LAYOUT_PROFILES[tier])) {
+    Object.assign(HERO_LAYOUT_PROFILES[tier][layout], bakedWidescreenLayout);
+  }
+}
 /** Default scene dolly (camera pull along view axis; positive = farther). */
 const SCENE_PUSH_Z = 0;
 /** Yaw the floor / twin stage (degrees). 0 = robot +X maps to screen horizontal. */
@@ -192,7 +198,7 @@ let photoCycleIndex = 0;
 const TREADMILL_SCALE = 3;
 /** Belt offset from robot base (robot-mount local space). */
 const DEFAULT_BELT_LAYOUT = {
-  beltOffsetX: 6.7,
+  beltOffsetX: 6.8,
   beltOffsetY: 0,
   beltOffsetZ: 0,
   beltYawDeg: 90,
@@ -225,7 +231,7 @@ const PHOTO_BACK_COLOR = 0x8d96a5;
 const LAYOUT_STORAGE_KEY = 'hero-robot-layout-v1';
 const TEACH_OVERRIDE_FILENAME = 'hero-teach-overrides.json';
 /** Bump to wipe stale localStorage poses/layout from older builds. */
-const HERO_CACHE_GEN = '76';
+const HERO_CACHE_GEN = '80';
 
 function clearStaleHeroLocalCache() {
   try {
@@ -239,8 +245,8 @@ function clearStaleHeroLocalCache() {
 }
 
 clearStaleHeroLocalCache();
-/** Effector photo scale at show pulse peak (500% = 5×). */
-const SHOW_PHOTO_PULSE_SCALE = 5;
+/** Effector photo scale at show pulse peak (300% = 3×). */
+const SHOW_PHOTO_PULSE_SCALE = 3;
 const PHOTO_CORNER_RADIUS_PX = 28;
 const PHOTO_PRELOAD_AHEAD = 2;
 const PROFILE_OVERRIDE_FIELDS = [
@@ -284,20 +290,64 @@ const PROFILE_DEFAULT_EXTRAS = {
   robotOffsetZ: 0,
 };
 
+/** Matches hero-teach-overrides.json — shared across all viewport tiers. */
 const DEFAULT_POSES = {
-  /** Idle — arm clear of the pick station; photo rests on belt. */
-  belt: { joint_1: 7, joint_2: 6, joint_3: -14, joint_4: 0, joint_5: 10, joint_6: 0 },
-  'belt-ready': { joint_1: 10, joint_2: 26, joint_3: -44, joint_4: 4, joint_5: 30, joint_6: 0 },
-  'belt-stop': { joint_1: -26, joint_2: 50, joint_3: -104, joint_4: 10, joint_5: 66, joint_6: 0 },
-  /** Reach and grasp photo on belt. */
-  pick: { joint_1: -7, joint_2: 76, joint_3: -31, joint_4: 0, joint_5: 40, joint_6: -98 },
-  /** Lift off belt. */
-  lift: { joint_1: 0, joint_2: 52, joint_3: -20, joint_4: 0, joint_5: 50, joint_6: 0 },
-  /** Hold photo up for display. */
-  show: { joint_1: -90, joint_2: -21, joint_3: -1, joint_4: 0, joint_5: 0, joint_6: 0 },
-  retract: { joint_1: 8, joint_2: 8, joint_3: -36, joint_4: 4, joint_5: 16, joint_6: 0 },
-  /** Return photo to belt. */
-  place: { joint_1: -28, joint_2: 54, joint_3: -112, joint_4: 12, joint_5: 70, joint_6: 0 },
+  belt: {
+    joint_1: 0, joint_2: 0, joint_3: 0, joint_4: 0, joint_5: 0, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.192, photoMountZ: 5,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  'belt-ready': {
+    joint_1: 0, joint_2: 60, joint_3: -60, joint_4: 0, joint_5: 70, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  'belt-stop': {
+    joint_1: 0, joint_2: 60, joint_3: -40, joint_4: 0, joint_5: 70, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  pick: {
+    joint_1: 0, joint_2: 88, joint_3: -57, joint_4: 0, joint_5: 58, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  lift: {
+    joint_1: 0, joint_2: 60, joint_3: -40, joint_4: 0, joint_5: 70, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  show: {
+    joint_1: -90, joint_2: -27, joint_3: 14, joint_4: 0, joint_5: -22, joint_6: 90,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.004,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  retract: {
+    joint_1: 0, joint_2: 60, joint_3: -40, joint_4: 0, joint_5: 70, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
+  place: {
+    joint_1: 0, joint_2: 88, joint_3: -57, joint_4: 0, joint_5: 58, joint_6: 0,
+    photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
+    beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
+    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+  },
 };
 
 /** Legacy pose keys — belt offset is fixed on the robot rig. */
@@ -366,7 +416,7 @@ const SCENE_FRAME_CONFIG = {
   beltPhotoRotZ: { min: -180, max: 180, step: 1, label: 'Belt rot Z°' },
   effectorPhotoX: { min: -0.3, max: 0.3, step: 0.001, label: 'Eff X' },
   effectorPhotoY: { min: -0.3, max: 0.3, step: 0.001, label: 'Eff Y' },
-  effectorPhotoZ: { min: 0, max: 0.2, step: 0.001, label: 'Eff Z' },
+  effectorPhotoZ: { min: -0.2, max: 0.2, step: 0.001, label: 'Eff Z' },
   effectorPhotoRotX: { min: -180, max: 180, step: 1, label: 'Eff rot X°' },
   effectorPhotoRotY: { min: -180, max: 180, step: 1, label: 'Eff rot Y°' },
   effectorPhotoRotZ: { min: -180, max: 180, step: 1, label: 'Eff rot Z°' },
@@ -411,8 +461,8 @@ function defaultSceneFrame() {
     beltPhotoRotZ: 0,
     effectorPhotoX: 0,
     effectorPhotoY: 0,
-    effectorPhotoZ: 0.088,
-    effectorPhotoRotX: 90,
+    effectorPhotoZ: -0.088,
+    effectorPhotoRotX: -90,
     effectorPhotoRotY: 0,
     effectorPhotoRotZ: 0,
   };
@@ -1400,16 +1450,41 @@ const EFFECTOR_PHOTO_STAGES = new Set([
 const BELT_PHOTO_STAGES = new Set(['belt', 'belt-ready', 'belt-stop', 'place']);
 
 /**
- * Default card lies in XY (image +Z). Rotate +90° X so the card lies in parent XZ:
- * photo normal (+Y) aligns with parent +Z — effector XY mates with photo XZ at pick.
+ * Default card lies in XY (image +Z). With gripper flipped 180° X on tool0, rotate −90° X
+ * so the card lies in parent XZ with print facing outward along gripper +Z (cup side).
  */
-const EFFECTOR_PHOTO_ATTACH_ROT = { x: Math.PI / 2, y: 0, z: 0 };
+const EFFECTOR_PHOTO_ATTACH_POS = { x: 0, y: 0, z: -0.088 };
+const EFFECTOR_PHOTO_ATTACH_ROT = { x: -Math.PI / 2, y: 0, z: 0 };
 
 function reportHero3dFailure(reason) {
   console.error('[hero-robot-3d]', reason);
 }
 
+function revealHeroVisual() {
+  document.querySelector('.hero-integrated .hero__visual.reveal')?.classList.add('visible');
+  document.querySelector('.hero-showcase')?.classList.add('is-inview');
+}
+
+function showCssFallback(stage) {
+  revealHeroVisual();
+  const fb = document.getElementById('hero-robot-fallback');
+  if (fb) fb.hidden = false;
+  stage?.classList.remove('hero__showcase-main--3d');
+  stage?.classList.add('hero-stage--show');
+  const wrap = document.getElementById(WRAP_ID);
+  if (wrap) {
+    delete wrap.dataset.ready;
+    wrap.replaceChildren();
+  }
+  window.__heroRobotCssFallback = true;
+  window.dispatchEvent(new CustomEvent('hero-robot-3d-ready'));
+  window.dispatchEvent(new CustomEvent('hero-start-cycle'));
+}
+
 function markReady(stage) {
+  revealHeroVisual();
+  const fb = document.getElementById('hero-robot-fallback');
+  if (fb) fb.hidden = true;
   stage?.classList.add('hero__showcase-main--3d', 'hero-stage--show');
   const wrap = document.getElementById(WRAP_ID);
   if (wrap) wrap.dataset.ready = 'true';
@@ -1848,7 +1923,11 @@ function attachEffectorPhoto(robot, imageUrl) {
     showBack: true,
   });
   if (gripper) {
-    photo.position.set(0, 0, 0.088);
+    photo.position.set(
+      EFFECTOR_PHOTO_ATTACH_POS.x,
+      EFFECTOR_PHOTO_ATTACH_POS.y,
+      EFFECTOR_PHOTO_ATTACH_POS.z,
+    );
     photo.rotation.set(
       EFFECTOR_PHOTO_ATTACH_ROT.x,
       EFFECTOR_PHOTO_ATTACH_ROT.y,
@@ -2105,6 +2184,10 @@ function heroViewportTier(width) {
 function getLayoutProfileOverrides(tier, layout, overrideStore) {
   const primaryKey = profileStorageKey(tier, layout);
   if (overrideStore[primaryKey]) return overrideStore[primaryKey];
+  const wideLandscapeKey = profileStorageKey('widescreen', 'landscape');
+  if (primaryKey !== wideLandscapeKey && overrideStore[wideLandscapeKey]) {
+    return overrideStore[wideLandscapeKey];
+  }
   for (const fbTier of LAYOUT_OVERRIDE_FALLBACK_TIERS[tier] || []) {
     const fbKey = profileStorageKey(fbTier, layout);
     if (overrideStore[fbKey]) return overrideStore[fbKey];
@@ -2189,7 +2272,9 @@ function frameRobot(model, camera, viewport = {}, visualScale = 1, options = {})
     lookPoint = cameraFrameLock.lookPoint;
     size = cameraFrameLock.size;
   } else {
-    lookPoint = WORLD_FRAMING_ORIGIN.clone();
+    const center = box.getCenter(new THREE.Vector3());
+    const bias = THREE.MathUtils.clamp(profile.frameBias ?? 0, 0, 1);
+    lookPoint = center.clone().lerp(WORLD_FRAMING_ORIGIN, bias);
     if (storeLock || !cameraFrameLock) {
       cameraFrameLock = { lookPoint: lookPoint.clone(), size: size.clone() };
       cameraFrameLockContext = layoutFrameContextKey(viewport);
@@ -2268,6 +2353,11 @@ function applyRobotModelFloor(robot) {
 }
 
 /** Multi-cup vacuum EOAT — shared manifold + array of large suction pumps (not one central vacuum). */
+/** Built along local +Z; flip 180° X when parenting to tool0 so cups face the workpiece. */
+const EOAT_GRIPPER_ATTACH_ROT = { x: Math.PI, y: 0, z: 0 };
+/** Push EOAT along tool0 +Z so cups clear link_6 (meters, tool0 frame). */
+const EOAT_GRIPPER_ATTACH_OFFSET = { x: 0, y: 0, z: 0.05 };
+
 function createEndEffectorGripper(envMap, { digital = false } = {}) {
   const group = new THREE.Group();
   group.name = 'eoat-gripper';
@@ -2395,6 +2485,16 @@ function attachEffectorGripper(robot, envMap, { digital = false } = {}) {
   const tool0 = findNodeByName(robot, 'tool0');
   if (!tool0) return null;
   const gripper = createEndEffectorGripper(envMap, { digital });
+  gripper.rotation.set(
+    EOAT_GRIPPER_ATTACH_ROT.x,
+    EOAT_GRIPPER_ATTACH_ROT.y,
+    EOAT_GRIPPER_ATTACH_ROT.z,
+  );
+  gripper.position.set(
+    EOAT_GRIPPER_ATTACH_OFFSET.x,
+    EOAT_GRIPPER_ATTACH_OFFSET.y,
+    EOAT_GRIPPER_ATTACH_OFFSET.z,
+  );
   tool0.add(gripper);
   return gripper;
 }
@@ -2486,6 +2586,7 @@ function initHeroRobot3D() {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   } catch {
     reportHero3dFailure('WebGL unavailable');
+    showCssFallback(stage);
     return;
   }
 
@@ -2755,8 +2856,8 @@ function initHeroRobot3D() {
       beltPhotoRotZ: THREE.MathUtils.radToDeg(beltPhoto?.rotation.z ?? 0),
       effectorPhotoX: effectorPhoto?.position.x ?? 0,
       effectorPhotoY: effectorPhoto?.position.y ?? 0,
-      effectorPhotoZ: effectorPhoto?.position.z ?? 0.088,
-      effectorPhotoRotX: THREE.MathUtils.radToDeg(effectorPhoto?.rotation.x ?? Math.PI / 2),
+      effectorPhotoZ: effectorPhoto?.position.z ?? EFFECTOR_PHOTO_ATTACH_POS.z,
+      effectorPhotoRotX: THREE.MathUtils.radToDeg(effectorPhoto?.rotation.x ?? EFFECTOR_PHOTO_ATTACH_ROT.x),
       effectorPhotoRotY: THREE.MathUtils.radToDeg(effectorPhoto?.rotation.y ?? 0),
       effectorPhotoRotZ: THREE.MathUtils.radToDeg(effectorPhoto?.rotation.z ?? 0),
     };
@@ -2935,7 +3036,7 @@ function initHeroRobot3D() {
     }
     updatePhotoStage('belt', beltPhoto, effectorPhoto);
 
-    scenePositionHud = createScenePositionHud(wrap);
+    scenePositionHud = POSE_TEACH_MODE ? createScenePositionHud(wrap) : null;
     teachLivePosEl = document.getElementById('hero-teach-live-pos');
     if (window.__heroPoseTeach) {
       window.__heroPoseTeach.updateLivePositions = updateScenePositionReadouts;
@@ -2948,6 +3049,8 @@ function initHeroRobot3D() {
     effectorNode = effector;
     cameraFrameLock = null;
     layoutScene(vp);
+    resize();
+    renderer.render(scene, camera);
     markReady(stage);
     animate();
   }
@@ -2966,9 +3069,12 @@ function initHeroRobot3D() {
     bootstrapRobotScene(collada);
   }).catch((err) => {
     reportHero3dFailure(err);
-    pmremGenerator.dispose();
-    envRT.dispose();
-    renderer.dispose();
+    try {
+      pmremGenerator.dispose();
+      envRT.dispose();
+      renderer.dispose();
+    } catch (_) { /* already torn down */ }
+    showCssFallback(stage);
   });
 
   function updateEffectorProxy() {
@@ -3007,7 +3113,7 @@ function initHeroRobot3D() {
       }
       updateEffectorProxy();
       updateScenePositionReadouts();
-      if (visible) renderer.render(scene, camera);
+      renderer.render(scene, camera);
     };
     tick();
   }

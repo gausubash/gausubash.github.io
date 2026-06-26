@@ -1,0 +1,13 @@
+# Local dev / IDE — not needed for GitHub Pages
+node_modules/
+package-lock.json
+package.json
+.cursor/
+
+# Debug / backup files
+debug-*.log
+hero-teach-overrides___.json
+
+# OS
+.DS_Store
+Thumbs.db

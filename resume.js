@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  document.querySelector('.resume-hero')?.classList.add('visible');
+
   /* ─── Sidebar + mobile nav active section ─── */
   const sections = document.querySelectorAll('.resume-section[id]');
   const sideLinks = document.querySelectorAll('.resume-sidebar nav a, .resume-mobile-nav a');

@@ -12,8 +12,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="design-tokens.css?v=78">
-  <link rel="stylesheet" href="style.css?v=78">
+  <link rel="stylesheet" href="design-tokens.css?v=80">
+  <link rel="stylesheet" href="style.css?v=96">
+  <script>
+  /* Runs before modules — hero must not stay opacity:0 if scripts.js is cached */
+  (function () {
+    var v = document.querySelector('.hero-integrated .hero__visual.reveal');
+    if (v) v.classList.add('visible');
+    var s = document.querySelector('.hero-showcase');
+    if (s) s.classList.add('is-inview');
+  })();
+  </script>
 </head>
 <body>
 
@@ -50,6 +59,9 @@
 
     <!-- ═══ HERO — headline + 3D demo ═══ -->
     <section class="hero-showcase hero--immersive hero--wide hero-3d-section hero-integrated snap-panel" id="top" data-section="hero" aria-label="Interactive robot demo">
+      <p class="hero-site-line">
+        <span class="hero-site-line__kicker">Research portfolio</span><span class="hero-site-line__sep"> — </span><span class="hero-site-line__highlight">computer vision, AI &amp; robotics</span>, and <span class="hero-site-line__highlight">geometric digital twins</span> for robotic manufacturing.
+      </p>
       <div class="hero__visual reveal">
         <div class="hero__showcase" id="hero-showcase">
           <div
@@ -130,39 +142,32 @@
         </div>
       </div>
 
-      <div class="hero-showcase__head reveal">
-        <h1 class="hero__title">
-          I build <span class="highlight">intelligent systems</span> across computer vision, AI, and robotics.
-        </h1>
+      <div class="marquee marquee--hero" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Geometric Digital Twin</span><span>·</span>
+          <span>4D Reconstruction</span><span>·</span>
+          <span>Robotic Additive Manufacturing</span><span>·</span>
+          <span>Computer Vision</span><span>·</span>
+          <span>Machine Learning</span><span>·</span>
+          <span>ROS2 &amp; C++</span><span>·</span>
+          <span>CSIRO</span><span>·</span>
+          <span>RMIT University</span><span>·</span>
+          <span>Geometric Digital Twin</span><span>·</span>
+          <span>4D Reconstruction</span><span>·</span>
+          <span>Robotic Additive Manufacturing</span><span>·</span>
+          <span>Computer Vision</span><span>·</span>
+          <span>Machine Learning</span><span>·</span>
+          <span>ROS2 &amp; C++</span><span>·</span>
+          <span>CSIRO</span><span>·</span>
+          <span>RMIT University</span><span>·</span>
+        </div>
       </div>
 
       <div class="hero__scroll" aria-hidden="true">
+        <span class="hero__scroll-line" aria-hidden="true"></span>
         <span>Scroll to explore</span>
-        <div class="hero__scroll-line"></div>
       </div>
     </section>
-
-    <!-- ═══ TRUST MARQUEE ═══ -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        <span>Geometric Digital Twin</span><span>·</span>
-        <span>4D Reconstruction</span><span>·</span>
-        <span>Robotic Additive Manufacturing</span><span>·</span>
-        <span>Computer Vision</span><span>·</span>
-        <span>Machine Learning</span><span>·</span>
-        <span>ROS2 &amp; C++</span><span>·</span>
-        <span>CSIRO</span><span>·</span>
-        <span>RMIT University</span><span>·</span>
-        <span>Geometric Digital Twin</span><span>·</span>
-        <span>4D Reconstruction</span><span>·</span>
-        <span>Robotic Additive Manufacturing</span><span>·</span>
-        <span>Computer Vision</span><span>·</span>
-        <span>Machine Learning</span><span>·</span>
-        <span>ROS2 &amp; C++</span><span>·</span>
-        <span>CSIRO</span><span>·</span>
-        <span>RMIT University</span><span>·</span>
-      </div>
-    </div>
 
     <!-- ═══ PITCH ═══ -->
     <section class="section section--light section--impact snap-panel" id="pitch" data-section="pitch">
@@ -190,24 +195,6 @@
             <span class="impact-stat__num">Real-time</span>
             <span class="impact-stat__label">In-process QA</span>
           </div>
-        </div>
-
-        <div class="impact-beats reveal-stagger">
-          <article class="impact-beat">
-            <span class="impact-beat__yr">2013</span>
-            <h3>Ship early</h3>
-            <p>National robotics winner · field systems in Nepal</p>
-          </article>
-          <article class="impact-beat">
-            <span class="impact-beat__yr">2021</span>
-            <h3>See while it builds</h3>
-            <p>4D reconstruction &amp; gDT-AM on cold spray cells</p>
-          </article>
-          <article class="impact-beat">
-            <span class="impact-beat__yr">Now</span>
-            <h3>Teams use it</h3>
-            <p>RMIT labs · ROS2 · vision pipelines in production</p>
-          </article>
         </div>
 
         <div class="impact-links reveal">
@@ -565,9 +552,6 @@
 
   </main>
 
-  <!-- Mobile sticky CTA -->
-  <a href="mailto:subash.gautam.jobs@gmail.com" class="mobile-cta" id="mobile-cta">Hire me →</a>
-
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Image viewer">
     <button class="lightbox__x" aria-label="Close">&times;</button>
@@ -584,7 +568,7 @@
     }
   }
   </script>
-  <script type="module" src="hero-robot-3d.js?v=78"></script>
-  <script defer src="scripts.js?v=78"></script>
+  <script type="module" src="hero-robot-3d.js?v=86"></script>
+  <script defer src="scripts.js?v=82"></script>
 </body>
 </html>
