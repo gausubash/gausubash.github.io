@@ -1,644 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subash Gautam - Resume</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Header Section */
-        .header {
-            text-align: center;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid rgba(0, 255, 255, 0.3);
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            color: #00ffff;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            font-weight: 300;
-        }
-
-        .header h2 {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
-            font-weight: 300;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .contact-item {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .contact-item:hover {
-            color: #00ffff;
-        }
-
-        /* Section Styling */
-        .section {
-            margin-bottom: 2.5rem;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: #00ffff;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid rgba(0, 255, 255, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        .section-content {
-            padding-left: 1rem;
-        }
-
-        /* Experience and Education */
-        .timeline-item {
-            margin-bottom: 2rem;
-            padding-left: 2rem;
-            position: relative;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.5rem;
-            width: 12px;
-            height: 12px;
-            background: #00ffff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 1.2rem;
-            bottom: -1rem;
-            width: 2px;
-            background: rgba(0, 255, 255, 0.3);
-        }
-
-        .timeline-item:last-child::after {
-            display: none;
-        }
-
-        .position {
-            font-size: 1.3rem;
-            color: #00ffff;
-            font-weight: 500;
-            margin-bottom: 0.3rem;
-        }
-
-        .company {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.3rem;
-        }
-
-        .date {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.8rem;
-            font-style: italic;
-        }
-
-        .description {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .skill-category h3 {
-            color: #00ffff;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.5rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .skill-list li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: #00ffff;
-            font-weight: bold;
-        }
-
-        /* Publications and Projects */
-        .project-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(10px);
-            border-left: 4px solid #00ffff;
-            transition: all 0.3s ease;
-        }
-
-        .project-item:hover {
-            transform: translateX(5px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .project-title {
-            color: #00ffff;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .project-description {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                background: white;
-                color: black;
-            }
-            
-            .container {
-                background: white;
-                box-shadow: none;
-                backdrop-filter: none;
-            }
-            
-            .header h1, .section-title, .position, .skill-category h3, .project-title {
-                color: #333;
-                text-shadow: none;
-            }
-            
-            .skill-category, .project-item {
-                background: #f8f9fa;
-                border: 1px solid #ddd;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                margin: 1rem;
-                padding: 1rem;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .timeline-item {
-                padding-left: 1rem;
-            }
-        }
-
-        /* Floating particles background */
-        .particle {
-            position: fixed;
-            background: rgba(0, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.6; }
-        }
-
-        /* Back button */
-        .back-button {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            background: rgba(0, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            color: #00ffff;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .back-button:hover {
-            background: rgba(0, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Print button */
-        .print-button {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: rgba(0, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            color: #00ffff;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .print-button:hover {
-            background: rgba(0, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Resume — Subash Gautam</title>
+  <meta name="description" content="Interactive CV of Subash Gautam — Digital Twin, Robotics, Computer Vision, Additive Manufacturing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="resume.css">
 </head>
 <body>
-    <a href="#" class="back-button" onclick="history.back()">Back to Portfolio</a>
-    <button class="print-button" onclick="window.print()">Print Resume</button>
+  <div class="resume-bg" aria-hidden="true"></div>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>Dr. Subash Gautam</h1>
-            <h2>Research Fellow & Robotics Engineer</h2>
-            <div class="contact-info">
-                <a href="mailto:subash.gautam@rmit.edu.au" class="contact-item">subash.gautam@rmit.edu.au</a>
-                <a href="https://www.linkedin.com/in/subashgautam/" class="contact-link">LinkedIn</a>
-                <a href="https://github.com/gausubash" class="contact-link">GitHub</a>
-                <a href="https://scholar.google.com/citations?user=LixjYDwAAAAJ&hl=en" class="contact-link">Research Papers</a>
-
-            </div>
-        </div>
-
-        <!-- Professional Summary -->
-        <div class="section">
-            <h2 class="section-title">Professional Summary</h2>
-            <div class="section-content">
-                <p>Accomplished Research Fellow at RMIT University with a PhD in Robotics and Engineering. Specializing in industrial robotics, renewable energy systems, computer vision, and human-computer interaction. Proven expertise in developing intelligent systems that integrate sustainable energy solutions with advanced robotics applications, with extensive experience in programming and integrating ABB, KUKA, and Fanuc robotic systems.</p>
-            </div>
-        </div>
-
-        <!-- Experience -->
-        <div class="section">
-            <h2 class="section-title">Professional Experience</h2>
-            <div class="section-content">
-                <div class="timeline-item">
-                    <div class="position">Research Fellow</div>
-                    <div class="company">RMIT University, Melbourne, Australia</div>
-                    <div class="date">Present</div>
-                    <div class="description">
-                        Leading cutting-edge research in robotics, renewable energy systems, and human-computer interaction. Mentoring graduate students and collaborating on interdisciplinary projects involving machine learning, computer vision, and embedded electronics. Contributing to sustainable automation technologies through innovative research and development.
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="position">PhD Candidate / Research Assistant</div>
-                    <div class="company">RMIT University, Melbourne, Australia</div>
-                    <div class="date">PhD Completed</div>
-                    <div class="description">
-                        Conducted doctoral research in robotics and renewable energy systems integration. Developed advanced algorithms for autonomous systems, published research in peer-reviewed journals, and presented findings at international conferences.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Education -->
-        <div class="section">
-            <h2 class="section-title">Education</h2>
-            <div class="section-content">
-                <div class="timeline-item">
-                    <div class="position">PhD in Mechanical, Mechatronics and Manufacturing</div>
-                    <div class="company">RMIT University, Melbourne, Australia</div>
-                    <div class="date">Completed (2021 - 2025)</div>
-                    <div class="description">
-                        <li>In-depth knowledge of metal additive manufacturing techniques, including cold spray additive manufacturing.</li>
-                        <li>Robotic hand-eye calibration of multiple laser profilers focusing on the deposition substrate.</li>
-                        <li>Detection of geometric defects in-process during additive manufacturing.</li>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="position">Master of Information and Communication Technology</div>
-                    <div class="company">La Trobe University</div>
-                    <div class="date">Completed (2017-2019) </div>
-                    <div class="description">
-                        <li> Achieved an average of 88.25% WAM (Weighted average mark)</li>
-                        <li>Membership of the Golden Key International Honour Society is based on the top 15% academic achievement, validated by La Trobe University in 2019.</li>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="position">Bachelor of Electronics and Communication Engineering (2009-2014)</div>
-                    <div class="company">Purbanchal University</div>
-                    <div class="date">Completed (2009-2014)</div>
-                    <div class="description">
-                        Final year project proceeding in IEEE Xplore (https://doi.org/10.1109/ICRERA.2016.7884494)
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Technical Skills -->
-        <div class="section">
-            <h2 class="section-title">Technical Skills</h2>
-            <div class="section-content">
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h3>🤖 Industrial Robotics</h3>
-                        <ul class="skill-list">
-                            <li>ABB Robot Programming</li>
-                            <li>KUKA Robot Integration</li>
-                            <li>Fanuc Systems</li>
-                            <li>Robot Programming & Integration</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>👁️ Vision Systems</h3>
-                        <ul class="skill-list">
-                            <li>Intel RealSense</li>
-                            <li>ScanCONTROL</li>
-                            <li>Cognex Vision Systems</li>
-                            <li>Baumer Cameras</li>
-                            <li>Setup, Calibration & Deployment</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>🔧 Simulation Tools</h3>
-                        <ul class="skill-list">
-                            <li>ABB RobotStudio</li>
-                            <li>KUKA Sim</li>
-                            <li>Custom C++ Simulation</li>
-                            <li>System Modeling</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>💻 Programming Languages</h3>
-                        <ul class="skill-list">
-                            <li>C/C++</li>
-                            <li>C#</li>
-                            <li>Python</li>
-                            <li>Java</li>
-                            <li>HTML/CSS</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>🧠 Machine Learning</h3>
-                        <ul class="skill-list">
-                            <li>PyTorch</li>
-                            <li>TensorFlow</li>
-                            <li>Keras</li>
-                            <li>Scikit-learn</li>
-                            <li>NumPy & Pandas</li>
-                            <li>Matplotlib</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>🛠️ Software & Tools</h3>
-                        <ul class="skill-list">
-                            <li>Microsoft Office 365</li>
-                            <li>SolidWorks</li>
-                            <li>AutoCAD</li>
-                            <li>CloudCompare</li>
-                            <li>Proteus</li>
-                            <li>Altium Designer</li>
-                            <li>OpenCV</li>
-                            <li>OpenGL</li>
-                            <li>Qt Framework</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Key Projects -->
-           
-        <div class="section">
-            <h2 class="section-title">HONOURS AND AWARDS</h2>
-            <div class="section-content">
-                <li><b>Non-Resident Nepali Association Australia Academic Excellence Award (2020): </b>
-                Academic Excellence Award presented by the Non-resident Nepali Association Australia for outstanding performance during master’s degree.</li>
-                <li><b>Golden Key International Honour Society Membership(2019): </b>
-                Membership is based on the top 15% of academic achievement validated by La Trobe University in 2019.</li>
-                <li><b>Outstanding Implementation for campus IPv6 Deployment(2019)</b>
-                Certificate awarded for Outstanding Implementation for campus IPv6 Deployment on 26th Annual La Trobe University Engineering and IT Showcase.</li>
-                <li><b>Best Project Award(2014): </b>
-                    Best project award awarded by the Department of Electronics and Communication Engineering, Acme Engineering College, Purbanchal University,2014.
-                Project Name: Maximum Power Point Tracker with solar prioritizer in PV application</li>
-                
-                <li><b>National Level Robotics Competition Winner(2013): </b>
-                Winner of NCIT ROBO Drive 2013, organised by the National College of Information Technology.</li>
-            
-            </div>
-        </div>
-
-                    
-        <div class="section">
-        <h2 class="section-title">TRAINING AND PARTICIPATION</h2>
-            <div class="section-content">
-                <li>
-                Specialisation in Advertising for printing. (ARENA Multimedia,2008)
-                </li>
-                 <li>
-                    Orientation Training on Microsoft Multipoint SDK 1.1(brain works learning solution PVT. LTD.) (2010)
-                </li>
-                 <li>
-                  Participation in the International Autonomous Robotic Competition organised in TECHKRITI’13, Annual Technical and Entrepreneurial Festival of IIT Kanpur. (14th to 17th March,2013)
-                </li>
-                 <li>
-                Participation in ARDUINO ROBOTIC WORKSHOP. (Robotics Association of Nepal) (2012)
-                </li>
-                 <li>
-                Participation in eSewa Yantra GRC Techkriti Nepal 2013, National robotic competition.  
-                </li>
-                <li>
-                Participation in YANTRA 2.0, National robotic competition, 2013
-                </li>
-                </p>
-            </div>
-        </div>
-        <div class="section">
-            <h2 class="section-title">TEAMWORK</h2>
-            <div class="section-content">
-                <li>
-                    Collaborated with a multidisciplinary team to develop a novel robot hand-eye calibration algorithm and simulation environment using a C++ program.
-                </li>
-                <li>
-                    Contributed to problem-solving efforts in group settings, helping to refine prototypes and achieve successful outcomes in challenging projects during the final year project.
-                </li>
-                <li>
-                    Led a research team, coordinating efforts to deliver a complex micro-hydro project ahead of schedule while maintaining high-quality standards.
-                </li>
-                <li>    
-                    Developed team-leading skills, including motivating team members to perform well through my role as a Team Leader in the robotics club.
-
-                </li>
-                <li>
-                    Lead competition as Team Captain by maintaining a good team spirit and leadership quality in projects.
-                </li>
-            
-            </div>
-        </div>
-
-         <div class="section">
-            <h2 class="section-title">Key Research Projects</h2>
-            <div class="section-content">
-                <div class="project-item">
-                    <div class="project-title">IPv6 Deployment on Campus Network<br> (Jul 2018 - Oct 2018)</div>
-                    <div class="project-description">
-                        <p>This project focused on deploying IPv6 across a campus network to address the limitations of IPv4 and prepare for future demands. The transition involved implementing a dual-stack system where IPv4 and IPv6 coexisted, upgrading network devices, and configuring services like DNS and DHCP to support IPv6. The deployment aimed to expand address space, enhance security, and ensure the network was scalable and future-proof. Comprehensive testing and training were conducted to ensure a smooth transition, resulting in a modernised network infrastructure supporting the growing number of devices and emerging technologies.</p>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">Gravitational Water Vortex Power Plant Pilot Project<br> (June 2016 - July 2016)</div>
-                    <div class="project-description">
-                        <p>The gravitational water vortex power plant is an emerging technology in the context of low-head hydropower, providing a suitable option for rural electrification. There is an opportunity for power generation in remote villages where it is difficult and economically not viable to offer the national power grid. Its simple design also allows it to be fabricated in local introductory workshops, allowing the design to be replicated worldwide. Thus, this project can act as an exemplar project for further improvements in the design of the gravitational water vortex power plant, which is a stepping stone for promoting the production of “green energy” by offering new solutions to existing problems through technical innovations.  </p>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">Human-Robot Interaction Systems</div>
-                    <div class="project-description">
-                        Designed and implemented intuitive human-computer interaction interfaces for collaborative robotics applications, focusing on safety and usability in industrial settings.
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">Multi-Platform Robot Programming</div>
-                    <div class="project-description">
-                        Specialized in programming and integration of multiple robotic platforms (ABB, KUKA, Fanuc) for diverse industrial applications, including custom simulation environments.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Publications & Research -->
-        <div class="section">
-            <h2 class="section-title">Publications & Research Output</h2>
-            <div class="section-content">
-                <div class="project-item">
-                    <div class="project-title">Peer-Reviewed Journal Publications</div>
-                    <div class="project-description">
-                        <li>Gautam, S., Lohr, H., Vargas-Uscategui, A., King, P. C., Bab-Hadiashar, A., Cole, I., & Asadi, E. (2025). 
-                            Streamlined robotic hand–eye calibration of multiple 2D-profilers: A rapid, closed-form two-stage method via a single-plane artefact. 
-                            Robotics and Computer-Integrated Manufacturing, 95, 102984.<br>
-                            <a href="https://doi.org/10.1016/j.rcim.2025.102984"> https://doi.org/10.1016/j.rcim.2025.102984</a>
-                        </li>
-                        <li>Chew, S. Y., Asadi, E., Vargas-Uscategui, A., King, P., Gautam, S., Bab-Hadiashar, A., & Cole, I. (2024). 
-                            In-process 4D reconstruction in robotic additive manufacturing. Robotics and Computer-Integrated Manufacturing, 89, 102784.<br> 
-                            <a href="https://doi.org/10.1016/j.rcim.2024.102784">https://doi.org/10.1016/j.rcim.2024.102784</a>
-                        </li>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">Conference Presentations</div>
-                    <div class="project-description">
-                        <li> Gautam, S., Raut, D. B., Neupane, P., Ghale, D. P., & Dhakal, R. (2016). 
-                            Maximum power point tracker with solar prioritizer in photovoltaic application. 
-                            2016 IEEE International Conference on Renewable Energy Research and Applications (ICRERA), 1051–1054.<br>
-                            <a href="https://doi.org/10.1109/ICRERA.2016.7884494"> https://doi.org/10.1109/ICRERA.2016.7884494</a>
-                        </li>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">Research Collaborations</div>
-                    <div class="project-description">
-                        <li>Sedai, A., Singh, G., Dhakal, R., Khatiwada, A., Khanal, K., Kumal, B., Gautam, S., & Mishra, A. K. (2021). 
-                            Technical and economic feasibility of a fully solar-powered Airport in Nepal. 
-                            2021 IEEE International Conference on Intelligent Systems, Smart and Green Technologies (ICISSGT), 122–127. <br>
-                            <a href="https://doi.org/10.1109/ICISSGT52025.2021.00035">https://doi.org/10.1109/ICISSGT52025.2021.00035</a>
-                        </li>
-                        <li>Dhakal, R., Dhakal, S., Koirala, N., Itani, S. C., Bhandari, S., Amgain, G. B., Bhatta, S., Gautam, S., & Shrestha, R. K. (2018). 
-                            Prospects of Off Grid Energy Generation through Low Head Screw Turbine in Nepal. 
-                            2018 7th International Conference on Renewable Energy Research and Applications (ICRERA), 537–543. <br>
-                            <a href="https://doi.org/10.1109/ICRERA.2018.8566964">https://doi.org/10.1109/ICRERA.2018.8566964</a>
-                        </li>
-                        <li>Khatiwada A., Itani S., Amgain G., Gautam S., Bhandari S., Shrestha R., Dhakal R., Dahal R. (2018), 
-                            “Analysis of the photovoltaic solar energy capacity of rooftops in Gorkha Bazzar Nepal”, 2018 KEC Conference, <br>
-                            <a href="https://kec.edu.np/kec-conference-2018-proceedings/58/">https://kec.edu.np/kec-conference-2018-proceedings/58/</a>
-                        </li>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <header class="resume-topbar">
+    <a href="index.html" class="resume-topbar__back">← Back to portfolio</a>
+    <div class="resume-topbar__actions">
+      <button class="btn-sm" id="print-resume" type="button">Print / Save PDF</button>
+      <a href="index.html#epilogue" class="btn-sm btn-sm--fill">Contact me</a>
     </div>
+  </header>
 
+  <div class="resume-mobile-nav" aria-label="Resume sections">
+    <a href="#summary">Summary</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#publications">Papers</a>
+    <a href="#education">Education</a>
+  </div>
+
+  <div class="resume-layout">
+    <aside class="resume-sidebar">
+      <p class="resume-sidebar__title">Navigate</p>
+      <nav aria-label="Resume sections">
+        <a href="#summary">Summary</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#publications">Publications</a>
+        <a href="#education">Education</a>
+        <a href="#awards">Awards</a>
+      </nav>
+    </aside>
+
+    <main class="resume-main">
+
+      <header class="resume-hero reveal">
+        <div class="resume-hero__photo">
+          <img src="photos/Graduation.png" alt="Subash Gautam"
+               onerror="this.src='photos/Convocation.JPG'">
+        </div>
+        <div>
+          <h1>Subash <span>Gautam</span></h1>
+          <p class="resume-hero__role">Research Engineer · PhD Mechatronics</p>
+          <div class="resume-hero__tags">
+            <span>Digital Twin</span>
+            <span>4D Reconstruction</span>
+            <span>Additive Manufacturing</span>
+            <span>Computer Vision</span>
+            <span>Robotics</span>
+          </div>
+          <div class="resume-hero__contact">
+            <a href="mailto:subash.gautam.jobs@gmail.com">subash.gautam.jobs@gmail.com</a>
+            <a href="https://www.linkedin.com/in/subashgautam/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://orcid.org/0000-0002-7925-004X" target="_blank" rel="noopener">ORCID</a>
+            <a href="https://www.subashgautam.com">subashgautam.com</a>
+          </div>
+        </div>
+      </header>
+
+      <section id="summary" class="resume-section reveal">
+        <h2 class="resume-section__title">Professional Summary</h2>
+        <p class="resume-summary">
+          Research Engineer with a PhD in Mechatronics Engineering and 5+ years developing advanced 3D/4D reconstruction,
+          image processing algorithms, and machine-learning-driven defect detection for high-rate dynamic systems.
+          Proven track record delivering novel imaging pipelines, real-time reconstruction frameworks, and physics-guided
+          computer vision methods deployed on robotic and industrial platforms. Passionate about translating complex
+          imaging research into robust, commercial-ready solutions.
+        </p>
+      </section>
+
+      <section id="achievements" class="resume-section reveal">
+        <h2 class="resume-section__title">Selected Achievements</h2>
+        <div class="achieve-grid">
+          <article class="achieve-card">
+            <span class="achieve-card__num">01</span>
+            <p>Developed a real-time 4D reconstruction pipeline for continuous monitoring of dynamic additive manufacturing processes.</p>
+          </article>
+          <article class="achieve-card">
+            <span class="achieve-card__num">02</span>
+            <p>Designed a geometric digital twin framework for in-process shape monitoring and deviation analysis.</p>
+          </article>
+          <article class="achieve-card">
+            <span class="achieve-card__num">03</span>
+            <p>Created a closed-form hand–eye calibration method for multi-sensor systems, significantly reducing calibration time.</p>
+          </article>
+          <article class="achieve-card">
+            <span class="achieve-card__num">04</span>
+            <p>Co-inventor on provisional patent 2025904901 — systems and methods for monitoring during manufacturing.</p>
+          </article>
+          <article class="achieve-card achieve-card--wide">
+            <span class="achieve-card__num">05</span>
+            <p>Published multiple first-author papers in <em>Robotics and Computer-Integrated Manufacturing</em> on 4D reconstruction and imaging.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="projects" class="resume-section reveal">
+        <h2 class="resume-section__title">Research &amp; Projects</h2>
+        <p class="resume-section__lead">Click a project card to explore photos and details.</p>
+
+        <p class="project-showcase__label">Research &amp; industry</p>
+        <div class="project-showcase">
+          <div class="project-showcase__tabs">
+            <button class="project-tab active" data-index="0" type="button">
+              <span class="project-tab__year">2021–2025 · CSIRO</span>
+              <h4>Real-Time 4D Reconstruction &amp; Digital Twin</h4>
+              <p>Robotic additive manufacturing monitoring</p>
+            </button>
+            <button class="project-tab" data-index="1" type="button">
+              <span class="project-tab__year">2025</span>
+              <h4>Hand–Eye Calibration</h4>
+              <p>Multi 2D-profiler closed-form method</p>
+            </button>
+            <button class="project-tab" data-index="2" type="button">
+              <span class="project-tab__year">2024–Present</span>
+              <h4>RMIT Research &amp; Teaching</h4>
+              <p>Vision, ML, robotics labs</p>
+            </button>
+          </div>
+          <div class="project-showcase__panel">
+            <div class="project-panel active" data-index="0">
+              <div class="project-panel__gallery">
+                <img src="photos/part%20digital%20twin.png" alt="Geometric digital twin of additively manufactured part with FEA visualization" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Digital Twin · 4D Reconstruction · Defect Detection</span>
+                <p>Designed real-time 4D reconstruction for robotic AM, geometric digital twin (gDT-AM) for shape monitoring, in-process 3D deviation mapping (3D-DM²), and ML-driven defect segmentation on cold spray platforms.</p>
+                <a href="https://arxiv.org/pdf/2511.05604" class="project-panel__link" target="_blank" rel="noopener">3D-DM² paper →</a>
+              </div>
+            </div>
+            <div class="project-panel" data-index="1">
+              <div class="project-panel__visual">Closed-form · Two-stage · Single-plane artefact</div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Robotics · Calibration · RCIM 2025</span>
+                <p>Streamlined robotic hand–eye calibration of multiple 2D laser profilers — rapid closed-form two-stage method that dramatically improves speed and accuracy for multi-sensor vision systems.</p>
+                <a href="https://doi.org/10.1016/j.rcim.2025.102984" class="project-panel__link" target="_blank" rel="noopener">Read paper →</a>
+              </div>
+            </div>
+            <div class="project-panel" data-index="2">
+              <div class="project-panel__gallery">
+                <img src="photos/Graduation_photo.png" alt="RMIT graduation" loading="lazy"
+                     onerror="this.src='photos/Graduation.png'">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">RMIT · VLM · Robotics Education</span>
+                <p>Automated pipelines converting 2D architectural plans to structured digital models. Leading robotics labs mentoring students in C++, Python, ROS2, and computer vision.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="project-showcase__label">Early engineering</p>
+        <!-- Early engineering showcase -->
+        <div class="project-showcase project-showcase--reverse">
+          <div class="project-showcase__tabs">
+            <button class="project-tab active" data-index="0" type="button">
+              <span class="project-tab__year">2013</span>
+              <h4>National Robotics Competition</h4>
+              <p>Winner — NCIT ROBO Drive</p>
+            </button>
+            <button class="project-tab" data-index="1" type="button">
+              <span class="project-tab__year">2013–2014</span>
+              <h4>Autonomous Line-Following Robot</h4>
+              <p>PID · Arduino Mega · Sensors</p>
+            </button>
+            <button class="project-tab" data-index="2" type="button">
+              <span class="project-tab__year">2015</span>
+              <h4>Surveillance &amp; Payload Drone</h4>
+              <p>IP camera · Precision drop</p>
+            </button>
+            <button class="project-tab" data-index="3" type="button">
+              <span class="project-tab__year">2013–2014</span>
+              <h4>Solar MPPT System</h4>
+              <p>IEEE ICRERA published</p>
+            </button>
+            <button class="project-tab" data-index="4" type="button">
+              <span class="project-tab__year">2016</span>
+              <h4>Water Vortex Power Plant</h4>
+              <p>Rural green energy · Nepal</p>
+            </button>
+            <button class="project-tab" data-index="5" type="button">
+              <span class="project-tab__year">2018</span>
+              <h4>Campus IPv6 Deployment</h4>
+              <p>La Trobe · Dual-stack network</p>
+            </button>
+          </div>
+          <div class="project-showcase__panel">
+            <div class="project-panel active" data-index="0">
+              <div class="project-panel__gallery">
+                <img src="photos/comp1.png" alt="Robotics competition terrain" loading="lazy" class="active">
+                <img src="photos/comp2.png" alt="Nepali Keto robot" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Robotics · Competition · Nepal</span>
+                <p>Robot "Nepali Keto" navigated hurdles, sand, pebbles, mud, and water — from Terai to Everest — and raised the flag 3.9m high in under two minutes.</p>
+              </div>
+            </div>
+            <div class="project-panel" data-index="1">
+              <div class="project-panel__gallery">
+                <img src="photos/robot1.png" alt="Line following robot" loading="lazy" class="active">
+                <img src="photos/robot2.png" alt="Robot sensors" loading="lazy">
+                <img src="photos/robot3.png" alt="Autonomous robot build" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Autonomous · PID · Arduino</span>
+                <p>Five-sensor line array with obstacle detection and PID-controlled movement on Arduino Mega — foundation in autonomous navigation.</p>
+              </div>
+            </div>
+            <div class="project-panel" data-index="2">
+              <div class="project-panel__gallery">
+                <img src="photos/drone1.png" alt="Drone build" loading="lazy" class="active">
+                <img src="photos/drone.png" alt="Drone in flight" loading="lazy">
+                <img src="photos/drone2.png" alt="Payload mechanism" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">UAV · Surveillance · Logistics</span>
+                <p>Cloud-based IP camera for real-time aerial monitoring with precision payload delivery for disaster response and medical supplies.</p>
+              </div>
+            </div>
+            <div class="project-panel" data-index="3">
+              <div class="project-panel__gallery">
+                <img src="photos/mppt1.png" alt="MPPT circuit" loading="lazy" class="active">
+                <img src="photos/mppt2.png" alt="Solar panel setup" loading="lazy">
+                <img src="photos/mppt3.png" alt="MPPT hardware" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Solar · Embedded · IEEE</span>
+                <p>Incremental conductance MPPT validated in hardware and MATLAB — 33% PV output boost in hardware. Published at IEEE ICRERA 2016.</p>
+                <a href="https://doi.org/10.1109/ICRERA.2016.7884494" class="project-panel__link" target="_blank" rel="noopener">IEEE paper →</a>
+              </div>
+            </div>
+            <div class="project-panel" data-index="4">
+              <div class="project-panel__gallery">
+                <img src="photos/gw1.png" alt="Water vortex power plant" loading="lazy" class="active">
+                <img src="photos/gw2.png" alt="Vortex turbine" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Renewable Energy · Hydropower</span>
+                <p>Gravitational water vortex power plant pilot for rural electrification — simple, replicable design for remote villages in Nepal.</p>
+              </div>
+            </div>
+            <div class="project-panel" data-index="5">
+              <div class="project-panel__gallery">
+                <img src="photos/switches.png" alt="Network switches" loading="lazy" class="active">
+                <img src="photos/cert.png" alt="IPv6 certification" loading="lazy">
+                <img src="photos/routers.png" alt="Network routers" loading="lazy">
+              </div>
+              <div class="project-panel__gallery-dots"></div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Networking · IPv6 · La Trobe</span>
+                <p>Dual-stack IPv6 deployment across campus network — awarded Outstanding Implementation at La Trobe Engineering Showcase 2019.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="resume-section reveal">
+        <h2 class="resume-section__title">Experience</h2>
+        <div class="exp-timeline">
+        <article class="exp-card open">
+          <button class="exp-card__header" type="button" aria-expanded="true">
+            <div>
+              <h3>Researcher &amp; Sessional Academic</h3>
+              <p class="exp-card__org">RMIT University</p>
+              <span class="exp-card__toggle">Show details</span>
+            </div>
+            <span class="exp-card__when">2024–Present</span>
+          </button>
+          <div class="exp-card__body">
+            <div class="exp-card__inner">
+              <ul>
+                <li>Developed automated image-processing pipelines for converting 2D architectural plans into structured digital models.</li>
+                <li>Led robotics laboratory sessions, mentoring students in C++, Python, ROS2, and computer vision.</li>
+                <li>Guided student engineering teams through hypothesis testing, prototyping, and system integration.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="exp-card">
+          <button class="exp-card__header" type="button" aria-expanded="false">
+            <div>
+              <h3>Postgraduate Student — Advanced Imaging &amp; 4D Reconstruction</h3>
+              <p class="exp-card__org">CSIRO</p>
+              <span class="exp-card__toggle">Show details</span>
+            </div>
+            <span class="exp-card__when">2021–2025</span>
+          </button>
+          <div class="exp-card__body">
+            <div class="exp-card__inner">
+              <ul>
+                <li>Designed real-time 4D reconstruction pipeline for robotic additive manufacturing.</li>
+                <li>Developed in-process 3D deviation mapping and defect detection with temporal modelling.</li>
+                <li>Created geometric digital twin framework combining physics-based and data-driven reconstruction.</li>
+                <li>Developed closed-form two-stage hand–eye calibration for multiple 2D laser profilers.</li>
+                <li>Co-inventor on provisional patent 2025904901; published 4 peer-reviewed papers.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="exp-card">
+          <button class="exp-card__header" type="button" aria-expanded="false">
+            <div>
+              <h3>Sessional Academic — Computer Programming</h3>
+              <p class="exp-card__org">La Trobe University</p>
+              <span class="exp-card__toggle">Show details</span>
+            </div>
+            <span class="exp-card__when">2020–2023</span>
+          </button>
+          <div class="exp-card__body">
+            <div class="exp-card__inner">
+              <ul>
+                <li>Taught C, C++, and Python — algorithms, data structures, and OOP to undergraduates.</li>
+                <li>Delivered hands-on labs for embedded systems and automation applications.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+        </div>
+      </section>
+
+      <section id="skills" class="resume-section reveal">
+        <h2 class="resume-section__title">Core Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Image Processing &amp; Reconstruction</h4>
+            <div class="skill-tags">
+              <span>4D Reconstruction</span>
+              <span>Digital Twin</span>
+              <span>Deviation Mapping</span>
+              <span>Multi-view Geometry</span>
+              <span>Defect Detection</span>
+              <span>Surface Reconstruction</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Software &amp; Algorithms</h4>
+            <div class="skill-tags">
+              <span>C++</span>
+              <span>Python</span>
+              <span>ROS2</span>
+              <span>OpenCV</span>
+              <span>OpenGL</span>
+              <span>PyTorch</span>
+              <span>TensorFlow</span>
+              <span>Git</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Robotics &amp; Manufacturing</h4>
+            <div class="skill-tags">
+              <span>Hand–Eye Calibration</span>
+              <span>Robotic AM</span>
+              <span>Cold Spray AM</span>
+              <span>Laser Profilers</span>
+              <span>Real-time Processing</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Research &amp; Leadership</h4>
+            <div class="skill-tags">
+              <span>Hypothesis Design</span>
+              <span>Experimental Validation</span>
+              <span>Patent Contribution</span>
+              <span>Team Leadership</span>
+              <span>Mentoring</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="publications" class="resume-section reveal">
+        <h2 class="resume-section__title">Publications</h2>
+        <div class="pub-list">
+        <article class="pub-card">
+          <span class="pub-item__meta">Journal · Under review · 2025</span>
+          <h4>Geometric Digital Twin for Robotic Additive Manufacturing (gDT-AM)</h4>
+          <p class="pub-item__authors">Gautam, S., Vargas-Uscategui, A., King, P., Lohr, H., Bab-Hadiashar, A., Cole, I., &amp; Asadi, E.</p>
+        </article>
+        <article class="pub-card">
+          <span class="pub-item__meta">Preprint · 2025</span>
+          <h4>In-process 3D Deviation Mapping and Defect Monitoring (3D-DM²)</h4>
+          <p class="pub-item__authors">Gautam, S., et al.</p>
+          <a href="https://arxiv.org/pdf/2511.05604" target="_blank" rel="noopener">arxiv.org/pdf/2511.05604</a>
+        </article>
+        <article class="pub-card">
+          <span class="pub-item__meta">Robotics and Computer-Integrated Manufacturing · 2025</span>
+          <h4>Streamlined robotic hand–eye calibration of multiple 2D-profilers</h4>
+          <p class="pub-item__authors">Gautam, S., Lohr, H., Vargas-Uscategui, A., King, P. C., Bab-Hadiashar, A., Cole, I., &amp; Asadi, E.</p>
+          <a href="https://doi.org/10.1016/j.rcim.2025.102984" target="_blank" rel="noopener">doi.org/10.1016/j.rcim.2025.102984</a>
+        </article>
+        <article class="pub-card">
+          <span class="pub-item__meta">Robotics and Computer-Integrated Manufacturing · 2024</span>
+          <h4>In-process 4D reconstruction in robotic additive manufacturing</h4>
+          <p class="pub-item__authors">Chew, S. Y., Asadi, E., Vargas-Uscategui, A., King, P., Gautam, S., Bab-Hadiashar, A., &amp; Cole, I.</p>
+          <a href="https://doi.org/10.1016/j.rcim.2024.102784" target="_blank" rel="noopener">doi.org/10.1016/j.rcim.2024.102784</a>
+        </article>
+        <article class="pub-card">
+          <span class="pub-item__meta">IEEE ICRERA · 2016</span>
+          <h4>Maximum power point tracker with solar prioritizer in photovoltaic application</h4>
+          <p class="pub-item__authors">Gautam, S., Raut, D. B., Neupane, P., Ghale, D. P., &amp; Dhakal, R.</p>
+          <a href="https://doi.org/10.1109/ICRERA.2016.7884494" target="_blank" rel="noopener">doi.org/10.1109/ICRERA.2016.7884494</a>
+        </article>
+        </div>
+      </section>
+
+      <section id="education" class="resume-section reveal">
+        <h2 class="resume-section__title">Education</h2>
+        <div class="timeline-cards">
+        <article class="timeline-card">
+          <span class="timeline-card__year">2021–2025</span>
+          <div class="timeline-card__body">
+            <h4>PhD — Mechanical, Mechatronics &amp; Manufacturing</h4>
+            <p>RMIT University, Melbourne — Real-time 4D reconstruction, hand–eye calibration, geometric defect segmentation using ML.</p>
+          </div>
+        </article>
+        <article class="timeline-card">
+          <span class="timeline-card__year">2017–2019</span>
+          <div class="timeline-card__body">
+            <h4>Master of Information &amp; Communication Technology</h4>
+            <p>La Trobe University — 88.25% WAM. Golden Key International Honour Society (top 15%).</p>
+          </div>
+        </article>
+        <article class="timeline-card">
+          <span class="timeline-card__year">2009–2014</span>
+          <div class="timeline-card__body">
+            <h4>BEng — Electronics &amp; Communication Engineering</h4>
+            <p>Purbanchal University, Nepal — Final year project published in IEEE Xplore (ICRERA 2017).</p>
+          </div>
+        </article>
+        </div>
+      </section>
+
+      <section id="awards" class="resume-section reveal">
+        <h2 class="resume-section__title">Honours &amp; Awards</h2>
+        <div class="timeline-cards timeline-cards--compact">
+        <article class="timeline-card">
+          <span class="timeline-card__year">2020</span>
+          <div class="timeline-card__body">
+            <h4>NRNA Australia Academic Excellence Award</h4>
+            <p>Outstanding performance during master's degree.</p>
+          </div>
+        </article>
+        <article class="timeline-card">
+          <span class="timeline-card__year">2019</span>
+          <div class="timeline-card__body">
+            <h4>Outstanding IPv6 Campus Deployment</h4>
+            <p>La Trobe University Engineering &amp; IT Showcase.</p>
+          </div>
+        </article>
+        <article class="timeline-card">
+          <span class="timeline-card__year">2014</span>
+          <div class="timeline-card__body">
+            <h4>Best Project Award — MPPT Solar System</h4>
+            <p>Department of ECE, Acme Engineering College, Purbanchal University.</p>
+          </div>
+        </article>
+        <article class="timeline-card">
+          <span class="timeline-card__year">2013</span>
+          <div class="timeline-card__body">
+            <h4>National Robotics Competition Winner</h4>
+            <p>NCIT ROBO Drive 2013 — National College of Information Technology, Nepal.</p>
+          </div>
+        </article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="lightbox" id="resume-lightbox" role="dialog" aria-modal="true" aria-label="Project image" hidden>
+    <button class="lightbox__close" aria-label="Close" type="button">&times;</button>
+    <img class="lightbox__img" src="" alt="">
+  </div>
+
+  <script src="resume.js"></script>
 </body>
 </html>
-

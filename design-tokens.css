@@ -1,0 +1,106 @@
+/**
+ * Shared responsive type & spacing — mobile → tablet (768+) → desktop (1024+) → wide (1440+)
+ * Load before style.css / resume.css on every page.
+ */
+:root {
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --bp-wide: 1440px;
+
+  /* Raw type scale */
+  --text-2xs: 0.625rem;
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.375rem;
+  --text-3xl: 1.625rem;
+  --text-display: 1.875rem;
+
+  /* Semantic typography */
+  --font-body-size: var(--text-base);
+  --font-label: var(--text-xs);
+  --font-caption: var(--text-2xs);
+  --font-lead: var(--text-sm);
+  --font-h2: var(--text-3xl);
+  --font-h3: var(--text-xl);
+  --font-h4: var(--text-lg);
+  --font-hero-title: var(--text-2xl);
+  --font-hero-deck: var(--text-sm);
+  --font-metric-num: var(--text-2xl);
+  --font-metric-label: var(--text-xs);
+  --font-nav: var(--text-sm);
+  --font-nav-drawer: var(--text-lg);
+  --font-brand: var(--text-base);
+  --font-card-title: var(--text-lg);
+  --font-card-body: var(--text-sm);
+
+  /* Buttons — one size system sitewide */
+  --btn-font: var(--text-sm);
+  --btn-py: 0.5rem;
+  --btn-px: 1rem;
+  --btn-lg-font: var(--text-base);
+  --btn-lg-py: 0.72rem;
+  --btn-lg-px: 1.4rem;
+
+  /* Layout rhythm */
+  --space-section-y: 3rem;
+  --space-section-x: 1.15rem;
+  --space-header-x: 1.15rem;
+  --space-inline: 1rem;
+  --header-h: 60px;
+  --content-max: 1140px;
+  --line-height-body: 1.65;
+  --line-height-tight: 1.12;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --text-base: 0.9375rem;
+    --text-sm: 0.875rem;
+    --text-md: 1rem;
+    --text-lg: 1.0625rem;
+    --text-xl: 1.1875rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 2rem;
+    --text-display: 2.375rem;
+    --font-hero-title: 2rem;
+    --font-hero-deck: var(--text-md);
+    --font-metric-num: 1.75rem;
+    --btn-py: 0.58rem;
+    --btn-px: 1.15rem;
+    --space-section-y: 4.5rem;
+    --space-section-x: 1.75rem;
+    --space-header-x: 1.75rem;
+    --header-h: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --text-2xl: 1.75rem;
+    --text-3xl: 2.25rem;
+    --text-display: 2.75rem;
+    --font-hero-title: 2.625rem;
+    --font-metric-num: 2.125rem;
+    --btn-py: 0.65rem;
+    --btn-px: 1.3rem;
+    --space-section-y: 5.5rem;
+    --space-section-x: 2.25rem;
+    --space-header-x: 2.25rem;
+    --header-h: 68px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --text-3xl: 2.5rem;
+    --text-display: 3.125rem;
+    --font-hero-title: 3rem;
+    --font-metric-num: 2.25rem;
+    --space-section-y: 6.5rem;
+    --space-section-x: 2.75rem;
+  }
+}

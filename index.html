@@ -1,237 +1,590 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Subash Gautam | AI & Robotics Portfolio</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>Subash Gautam — Research Engineer · Computer Vision, AI &amp; Robotics</title>
+  <meta name="description" content="PhD Research Engineer in computer vision, AI, and robotics. CSIRO · RMIT · Digital twins · 4D reconstruction · Publications · Patent.">
+  <meta name="author" content="Subash Gautam">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css?v=76">
+  <link rel="stylesheet" href="style.css?v=76">
 </head>
 <body>
-    <div class="bg-animation"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">
-              <img src="photos/logo_trans.png" alt="logo subash" width="50px">
-            </a>
-            
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#portfolio">Work</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#hobbies">Hobbies</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <!-- <li><a href="resume-pdf.html">Resume</a></li> Added Resume tab -->
-                <li><a href="resume.pdf" target="_blank">Resume</a></li>
-            </ul>
-        </div>
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+  <canvas id="mesh-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <header class="header" id="header">
+    <a href="#top" class="header__brand">
+      <img src="photos/logo_trans.png" alt="" width="32" height="32" onerror="this.remove()">
+      <span>Subash Gautam</span>
+    </a>
+    <nav class="header__nav" id="main-nav" aria-label="Main">
+      <a href="#pitch">Why me</a>
+      <a href="#work">Work</a>
+      <a href="#proof">Proof</a>
+      <a href="#skills">Skills</a>
+      <a href="resume.html">Resume</a>
     </nav>
+    <div class="header__actions">
+      <a href="mailto:subash.gautam.jobs@gmail.com" class="btn btn--hire">Let's talk</a>
+      <button class="header__menu" id="menu-btn" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Subash Gautam</h1>
-            <h2>AI & Robotics Engineer</h2>
-            <p>Developing intelligent systems that bridge the gap between artificial intelligence and real-world applications. Specializing in computer vision, machine learning, and autonomous robotics.</p>
-            <!-- <a href="#portfolio" class="cta-button">View My Work</a> -->
-        </div>
-    </section>
+  <!-- Story progress -->
+  <div class="story-progress" aria-hidden="true">
+    <div class="story-progress__bar" id="story-progress"></div>
+  </div>
 
+  <main class="story-scroll">
 
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about">
-                <div class="about-content">
-                    <div class="about-image">
-                        <img src="photos/Graduation_photo.png" alt="photo" class="circle-image">
+    <!-- ═══ HERO — headline + 3D demo ═══ -->
+    <section class="hero-showcase hero--immersive hero--wide hero-3d-section hero-integrated snap-panel" id="top" data-section="hero" aria-label="Interactive robot demo">
+      <div class="hero__visual reveal">
+        <div class="hero__showcase" id="hero-showcase">
+          <div
+            class="hero__showcase-main hero__showcase-main--robot hero-stage--belt"
+            id="hero-robot-stage"
+            aria-live="polite"
+          >
+            <div class="hero__stage-bg" aria-hidden="true"></div>
 
+            <div class="hero__robot-scene" aria-hidden="true">
+              <div class="hero__robot-3d" id="hero-robot-canvas-wrap" aria-hidden="true"></div>
+              <div class="hero__robot-arm hero__robot-arm--fallback" id="hero-robot-fallback" hidden>
+                <div class="robot-arm-rig">
+                <div class="robot-ceiling-rail"></div>
+                <div class="robot-base-pivot">
+                  <span class="robot-hinge robot-hinge--base" aria-hidden="true"><span class="robot-hinge-ring"></span></span>
+                  <div class="robot-link robot-link--1">
+                    <div class="robot-joint robot-joint--1">
+                      <span class="robot-hinge" aria-hidden="true"><span class="robot-hinge-ring"></span></span>
+                      <div class="robot-link robot-link--2">
+                        <div class="robot-joint robot-joint--2">
+                          <span class="robot-hinge" aria-hidden="true"><span class="robot-hinge-ring"></span></span>
+                          <div class="robot-link robot-link--3">
+                            <div class="robot-joint robot-joint--3">
+                              <span class="robot-hinge" aria-hidden="true"><span class="robot-hinge-ring"></span></span>
+                              <div class="robot-link robot-link--4">
+                                <div class="robot-joint robot-joint--4">
+                                  <span class="robot-hinge" aria-hidden="true"><span class="robot-hinge-ring"></span></span>
+                                  <div class="robot-link robot-link--wrist">
+                                    <div class="robot-joint robot-joint--5">
+                                      <span class="robot-hinge robot-hinge--tool" aria-hidden="true"><span class="robot-hinge-ring"></span></span>
+                                      <div class="robot-vacuum-mount" id="robot-effector">
+                                        <span class="robot-vacuum-manifold"></span>
+                                        <span class="robot-vacuum-cups" aria-hidden="true">
+                                          <span class="robot-vacuum-cup"></span>
+                                          <span class="robot-vacuum-cup"></span>
+                                          <span class="robot-vacuum-cup"></span>
+                                          <span class="robot-vacuum-cup"></span>
+                                        </span>
+                                        <span class="robot-vacuum-field" aria-hidden="true"></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="about-text">
-                        <h3>AI & Robotics Engineer</h3>
-                        <p>With a passion for cutting-edge technology, I specialize in developing intelligent systems that can perceive, learn, and interact with the world around them.</p>
-                        <p>My expertise spans computer vision algorithms, machine learning models, autonomous robotics, and embedded electronics - creating solutions that push the boundaries of what's possible.</p>
-                        <p>From neural networks that can recognize complex patterns to robots that navigate autonomously, I bring AI concepts to life through practical, real-world applications.</p>
-                    </div>
+                  </div>
                 </div>
+                </div>
+              </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section">
-        <div class="container">
-            <h2 class="section-title">My Work</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/switches.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/cert.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/routers.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>IPv6 Deployment on Campus Network<br> (Jul 2018 - Oct 2018) </h3>
-                        <p>
-                            This project focused on deploying IPv6 across a campus network to address the limitations of IPv4 and prepare for future demands. The transition involved implementing a dual-stack system where IPv4 and IPv6 coexisted, upgrading network devices, and configuring services like DNS and DHCP to support IPv6. The deployment aimed to expand address space, enhance security, and ensure the network was scalable and future-proof. Comprehensive testing and training were conducted to ensure a smooth transition, resulting in a modernised network infrastructure supporting the growing number of devices and emerging technologies.
-                        </p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/gw1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/gw2.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Gravitational Water Vortex Power Plant Pilot Project<br> (June 2016 - July 2016)</h3>
-                        <p>The gravitational water vortex power plant is an emerging technology in the context of low-head hydropower, providing a suitable option for rural electrification. There is an opportunity for power generation in remote villages where it is difficult and economically not viable to offer the national power grid. Its simple design also allows it to be fabricated in local introductory workshops, allowing the design to be replicated worldwide. Thus, this project can act as an exemplar project for further improvements in the design of the gravitational water vortex power plant, which is a stepping stone for promoting the production of “green energy” by offering new solutions to existing problems through technical innovations.  </p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/drone1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/drone.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/drone2.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Drone with video surveillance system and payload delivery and drop mechanism <br>(Jan 2015 - Feb 2015)</h3>
-                        <p>This project focuses on developing a versatile drone with a video surveillance system and a payload delivery and drop mechanism. The drone is designed to perform real-time aerial monitoring using a cloud-based IP camera, making it ideal for security and disaster management applications. Additionally, it features a robust payload delivery system that allows for the transportation and precise dropping of items, such as medical supplies or equipment, to targeted locations. By integrating these two functions into a single platform, the project aims to create a cost-effective, efficient solution for complex operations requiring surveillance and logistics capabilities.</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/mppt1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/mppt2.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/mppt3.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Maximum Power Point Tracker with Solar Prioritizer In Photovoltaic Application (Nov 2013 - Feb 2014)</h3>
-                        <p>The global use of solar photovoltaic systems is accelerating rapidly due to the ever-decreasing cost and improved cell efficiency. The variation in solar irradiance, weather conditions, and temperature causes solar cells' non-linear output V-I characteristics. An efficient maximum power point tracker is needed to get maximum power from the solar array instantaneously. This study has implemented the incremental conductance MPPT algorithm in hardware and compared the result with a software model using MATLAB/SIMULINK. This algorithm automatically changes the converter's duty cycle connected to the solar panel so that the panel voltage becomes equal to the voltage equivalent to the maximum power point at any level of insolation, temperature or load conditions. It was found that the software-modelled MPPT algorithm increased the PV output by 38 %, while it was 33% in hardware implementation. The prioritizer embedded in the system optimises the use of solar power rather than the utility grid.</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/robot1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/robot2.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/robot3.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>Line and wall following robot with obstacle detection<br>(Aug 2013 - Oct 2013)</h3>
-                        <p> A line following a robot is a fundamental concept of an autonomous vehicle that follows a predefined path, which can be a white or black stripe with a distinctive background. The path may also be designed to be magnetic, so the sensor should be able to detect magnetic fields. In our project, a White line with 2.5cm width is used with a black floor. Using a line array with five sensors and a built-in comparator provides enough information to track the white line and smooth the movement precisely. The Arduino Mega Development board provides enough input pins to connect lines, obstacle/wall sensors and motors. The PID algorithm is implemented to control the robot's movement as smoothly as possible by tuning the algorithm appropriately. There are myriad applications for robots where there is limited access for humans and risk to human beings. Also, there is a tremendous possibility of autonomous vehicles with different kinds of techniques like cameras, Laser, Magnetic tracks, etc, considering safety. </p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-image">
-                        <img src="photos/comp1.png" alt="computer vision" width="auto" height="250px">
-                        <img src="photos/comp2.png" alt="computer vision" width="auto" height="250px">
-                    </div>
-                    <div class="portfolio-content">
-                        <h3>National Robotics Competition (Theme: Navigate rough terrain and raise flag)<br>(Apr 2013 – May 2013)</h3>
-                        <p>The start-to-finish track where robots had to travel was hurdles, sand, pebbles, mud, and water, which represent the journey of a robot from Terai through hills and the destination at Mount Everest. The final part was to raise the flag. Robot “Nepali Keto” completed the track within two minutes and raised the flag 3.9m High. </p>
-                    </div>
-                </div>
+            <div id="robot-effector-proxy" class="robot-effector-proxy" aria-hidden="true"></div>
+
+            <div class="hero__payload" id="hero-payload" aria-hidden="true">
+              <img
+                class="hero__payload-photo"
+                src="photos/Graduation.png"
+                alt=""
+                width="120"
+                height="89"
+                loading="lazy"
+              >
             </div>
+
+          </div>
+
+          <div class="hero__video-slot" id="hero-video-slot" hidden>
+            <video id="hero-video" muted loop playsinline poster="photos/part%20digital%20twin.png"></video>
+            <button type="button" class="hero__video-play" id="hero-video-play" aria-label="Play demo video">
+              <span aria-hidden="true">▶</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div class="hero-showcase__head reveal">
+        <h1 class="hero__title">
+          I build <span class="highlight">intelligent systems</span> across computer vision, AI, and robotics.
+        </h1>
+      </div>
+
+      <div class="hero__scroll" aria-hidden="true">
+        <span>Scroll to explore</span>
+        <div class="hero__scroll-line"></div>
+      </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section">
-        <div class="container">
-            <h2 class="section-title">Skills & Expertise</h2>
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Machine Learning</h3>
+    <!-- ═══ TRUST MARQUEE ═══ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Geometric Digital Twin</span><span>·</span>
+        <span>4D Reconstruction</span><span>·</span>
+        <span>Robotic Additive Manufacturing</span><span>·</span>
+        <span>Computer Vision</span><span>·</span>
+        <span>Machine Learning</span><span>·</span>
+        <span>ROS2 &amp; C++</span><span>·</span>
+        <span>CSIRO</span><span>·</span>
+        <span>RMIT University</span><span>·</span>
+        <span>Geometric Digital Twin</span><span>·</span>
+        <span>4D Reconstruction</span><span>·</span>
+        <span>Robotic Additive Manufacturing</span><span>·</span>
+        <span>Computer Vision</span><span>·</span>
+        <span>Machine Learning</span><span>·</span>
+        <span>ROS2 &amp; C++</span><span>·</span>
+        <span>CSIRO</span><span>·</span>
+        <span>RMIT University</span><span>·</span>
+      </div>
+    </div>
+
+    <!-- ═══ PITCH ═══ -->
+    <section class="section section--light section--impact snap-panel" id="pitch" data-section="pitch">
+      <div class="section__inner">
+        <div class="impact-head reveal">
+          <p class="label">Why me</p>
+          <h2>Research that <em>ships</em> to production.</h2>
+          <p class="impact-tagline">CSIRO × RMIT · Digital twins · Real-time vision on robotic cells</p>
+        </div>
+
+        <div class="impact-stats reveal-stagger" id="hero-metrics">
+          <div class="impact-stat">
+            <span class="impact-stat__num" data-count="4">0</span>
+            <span class="impact-stat__label">RCIM papers</span>
+          </div>
+          <div class="impact-stat">
+            <span class="impact-stat__num" data-count="5">0</span>
+            <span class="impact-stat__label">Years CSIRO</span>
+          </div>
+          <div class="impact-stat">
+            <span class="impact-stat__num" data-count="1">0</span>
+            <span class="impact-stat__label">Patent</span>
+          </div>
+          <div class="impact-stat impact-stat--text">
+            <span class="impact-stat__num">Real-time</span>
+            <span class="impact-stat__label">In-process QA</span>
+          </div>
+        </div>
+
+        <div class="impact-beats reveal-stagger">
+          <article class="impact-beat">
+            <span class="impact-beat__yr">2013</span>
+            <h3>Ship early</h3>
+            <p>National robotics winner · field systems in Nepal</p>
+          </article>
+          <article class="impact-beat">
+            <span class="impact-beat__yr">2021</span>
+            <h3>See while it builds</h3>
+            <p>4D reconstruction &amp; gDT-AM on cold spray cells</p>
+          </article>
+          <article class="impact-beat">
+            <span class="impact-beat__yr">Now</span>
+            <h3>Teams use it</h3>
+            <p>RMIT labs · ROS2 · vision pipelines in production</p>
+          </article>
+        </div>
+
+        <div class="impact-links reveal">
+          <a href="#work" class="btn btn--primary">See work</a>
+          <a href="resume.html" class="btn btn--outline">Resume</a>
+          <a href="https://scholar.google.com/citations?user=LixjYDwAAAAJ&amp;hl=en" target="_blank" rel="noopener">Scholar</a>
+          <a href="https://www.linkedin.com/in/subashgautam/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ EXPERTISE ═══ -->
+    <section class="section section--cream section--impact snap-panel" id="expertise" data-section="expertise">
+      <div class="section__inner">
+        <div class="impact-head impact-head--row reveal">
+          <div>
+            <p class="label">Expertise</p>
+            <h2>Four pillars</h2>
+          </div>
+        </div>
+        <div class="impact-pillars reveal-stagger">
+          <article class="impact-pillar" data-pillar="twin">
+            <h3>Digital Twin</h3>
+            <p>In-process geometry · deviation maps</p>
+          </article>
+          <article class="impact-pillar" data-pillar="vision">
+            <h3>Computer Vision</h3>
+            <p>Multi-sensor · 4D tracking</p>
+          </article>
+          <article class="impact-pillar" data-pillar="robotics">
+            <h3>Robotics</h3>
+            <p>ROS2 · AM cells · fusion</p>
+          </article>
+          <article class="impact-pillar" data-pillar="ml">
+            <h3>AI / ML</h3>
+            <p>Defect models · VLM pipelines</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CASE STUDIES ═══ -->
+    <section class="section section--dark section--impact snap-panel" id="work" data-section="work">
+      <div class="section__inner">
+        <div class="impact-head impact-head--light reveal">
+          <p class="label">Work</p>
+          <h2>Case studies</h2>
+        </div>
+
+        <div class="case-browser reveal">
+          <div class="case-tabs" role="tablist" aria-label="Projects">
+            <button class="case-tab active" role="tab" aria-selected="true" data-case="0">gDT-AM Digital Twin</button>
+            <button class="case-tab" role="tab" aria-selected="false" data-case="1">3D-DM² Defects</button>
+            <button class="case-tab" role="tab" aria-selected="false" data-case="2">Hand–Eye Calibration</button>
+            <button class="case-tab" role="tab" aria-selected="false" data-case="3">4D Reconstruction</button>
+            <button class="case-tab" role="tab" aria-selected="false" data-case="4">Patent &amp; RMIT</button>
+          </div>
+
+          <div class="case-panels">
+            <article class="case-panel active" data-case="0">
+              <div class="case-panel__media case-panel__media--contain" data-gallery>
+                <img src="photos/part%20digital%20twin.png" alt="Part digital twin — physical metal geometry transitioning to wireframe mesh with FEA stress visualization" class="active" loading="lazy">
+              </div>
+              <div class="case-panel__body">
+                <span class="case-panel__meta">2025 · Digital Twin</span>
+                <h3>gDT-AM — geometric digital twin</h3>
+                <p class="case-panel__impact">Live deposition geometry vs design — in-process QA on robotic AM.</p>
+                <div class="case-panel__tags">
+                  <span>Digital Twin</span><span>Robotic AM</span>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Computer Vision</h3>
+              </div>
+            </article>
+
+            <article class="case-panel" data-case="1">
+              <div class="case-panel__media case-panel__media--viz">
+                <div class="viz-defect"><div></div><div class="alert"></div><div></div></div>
+              </div>
+              <div class="case-panel__body">
+                <span class="case-panel__meta">2025 · arXiv</span>
+                <h3>3D-DM² defect monitoring</h3>
+                <p class="case-panel__impact">ML temporal tracking — catches geometry errors before scrap.</p>
+                <a href="https://arxiv.org/pdf/2511.05604" class="case-link" target="_blank" rel="noopener">Paper →</a>
+              </div>
+            </article>
+
+            <article class="case-panel" data-case="2">
+              <div class="case-panel__media case-panel__media--viz">
+                <div class="viz-calib"><div class="plane"></div><div class="beam"></div><div class="beam"></div></div>
+              </div>
+              <div class="case-panel__body">
+                <span class="case-panel__meta">2025 · RCIM</span>
+                <h3>Multi-profiler hand–eye calibration</h3>
+                <p class="case-panel__impact">Closed-form two-stage — faster multi-sensor cell deployment.</p>
+                <a href="https://doi.org/10.1016/j.rcim.2025.102984" class="case-link" target="_blank" rel="noopener">Paper →</a>
+              </div>
+            </article>
+
+            <article class="case-panel" data-case="3">
+              <div class="case-panel__media" data-gallery>
+                <img src="photos/robot1.png" alt="Robotics project" loading="lazy" class="active">
+                <img src="photos/robot2.png" alt="Robot sensors" loading="lazy">
+                <img src="photos/robot3.png" alt="Autonomous system" loading="lazy">
+              </div>
+              <div class="case-panel__body">
+                <span class="case-panel__meta">2024 · RCIM</span>
+                <h3>4D reconstruction in robotic AM</h3>
+                <p class="case-panel__impact">Real-time evolving geometry — where static 3D scans fail.</p>
+                <a href="https://doi.org/10.1016/j.rcim.2024.102784" class="case-link" target="_blank" rel="noopener">Paper →</a>
+              </div>
+            </article>
+
+            <article class="case-panel" data-case="4">
+              <div class="case-panel__media" data-gallery>
+                <img src="photos/Graduation.png" alt="Graduation" class="active" loading="lazy"
+                     onerror="this.src='photos/Convocation.JPG'">
+              </div>
+              <div class="case-panel__body">
+                <span class="case-panel__meta">2024–Now · CSIRO &amp; RMIT</span>
+                <h3>Patent · teaching · VLM pipelines</h3>
+                <p class="case-panel__impact">Patent 2025904901 · ROS2 labs · architectural digitisation.</p>
+                <div class="case-panel__tags">
+                  <span>Patent</span><span>RMIT</span><span>ROS2</span>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Robotics</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Electronics</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Python/TensorFlow</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Embedded Systems</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Data Science</h3>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-icon"></div>
-                    <h3>Deep Learning</h3>
-                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="gallery-strip gallery-strip--compact reveal">
+          <div class="gallery-strip__track" id="gallery-strip">
+            <figure><img src="photos/comp1.png" alt="Robotics competition" loading="lazy"></figure>
+            <figure><img src="photos/drone1.png" alt="Drone project" loading="lazy"></figure>
+            <figure><img src="photos/mppt1.png" alt="Solar MPPT" loading="lazy"></figure>
+            <figure><img src="photos/gw1.png" alt="Hydropower" loading="lazy"></figure>
+            <figure><img src="photos/switches.png" alt="IPv6 network" loading="lazy"></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PROOF ═══ -->
+    <section class="section section--light section--impact snap-panel" id="proof" data-section="proof">
+      <div class="section__inner">
+        <div class="impact-head reveal">
+          <p class="label">Proof</p>
+          <h2>Published. Patented.</h2>
+        </div>
+        <div class="proof-impact reveal-stagger">
+          <div class="proof-impact__visual">
+            <img src="photos/part%20digital%20twin.png" alt="gDT-AM research figure" loading="lazy" width="480" height="360">
+            <img src="photos/rcim-journal-cover.jpg" alt="RCIM journal" class="proof-impact__journal" loading="lazy" width="72" height="96">
+          </div>
+          <div class="proof-impact__stats">
+            <div class="impact-stat"><span class="impact-stat__num">4</span><span class="impact-stat__label">RCIM papers</span></div>
+            <div class="impact-stat"><span class="impact-stat__num">PhD</span><span class="impact-stat__label">Mechatronics</span></div>
+            <div class="impact-stat"><span class="impact-stat__num">5+</span><span class="impact-stat__label">Years CSIRO</span></div>
+            <div class="impact-stat"><span class="impact-stat__num">2013</span><span class="impact-stat__label">National robotics</span></div>
+          </div>
+          <div class="proof-impact__pubs">
+            <a href="https://doi.org/10.1016/j.rcim.2025.102984" class="proof-pub" target="_blank" rel="noopener">
+              <span>RCIM 2025</span><strong>Hand–eye calibration</strong>
+            </a>
+            <a href="https://doi.org/10.1016/j.rcim.2024.102784" class="proof-pub" target="_blank" rel="noopener">
+              <span>RCIM 2024</span><strong>4D reconstruction</strong>
+            </a>
+            <a href="https://arxiv.org/pdf/2511.05604" class="proof-pub" target="_blank" rel="noopener">
+              <span>arXiv 2025</span><strong>3D-DM² defects</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SKILLS ═══ -->
+    <section class="section section--cream section--impact snap-panel" id="skills" data-section="skills">
+      <div class="section__inner">
+        <div class="impact-head reveal">
+          <p class="label">Stack</p>
+          <h2>Tools I ship with</h2>
+        </div>
+        <div class="impact-tags reveal-stagger">
+          <div class="impact-tag-group">
+            <h3>Vision &amp; twin</h3>
+            <ul>
+              <li>4D Reconstruction</li><li>Digital Twin</li><li>OpenCV</li><li>OpenGL</li><li>Defect Detection</li>
+            </ul>
+          </div>
+          <div class="impact-tag-group">
+            <h3>Robotics</h3>
+            <ul>
+              <li>ROS2</li><li>C++</li><li>Python</li><li>Sensor Fusion</li>
+            </ul>
+          </div>
+          <div class="impact-tag-group">
+            <h3>ML</h3>
+            <ul>
+              <li>PyTorch</li><li>TensorFlow</li><li>VLM</li><li>Deviation Maps</li>
+            </ul>
+          </div>
+          <div class="impact-tag-group">
+            <h3>Leadership</h3>
+            <ul>
+              <li>Patent</li><li>RMIT Labs</li><li>Mentoring</li><li>Cross-functional</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="career-graph career-graph--compact reveal" id="career-graph">
+          <div class="career-graph__head">
+            <h3 class="timeline-career__title">Timeline</h3>
+          </div>
+
+          <div class="career-graph__viewport">
+            <div class="career-graph__years" aria-hidden="true">
+              <span>2009</span><span>2013</span><span>2017</span><span>2021</span><span>2026</span>
             </div>
-        </div>
-    </section>
 
-        <!-- hobbies Section -->
-    <section id="hobbies" class="section">
-        <div class="container">
-            <h2 class="section-title">Beyond professional life</h2>
-            <div class="hobbies-grid">
-                <div class="hobbie-item">
-                    <div class="hobbie-image">
-                        <!-- <img src="photos/drone.png" alt="drone" width="auto" height="auto"> -->
-                    </div>
-                    <h3>Drone Flying</h3>
-
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>3D Printing</h3>
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>Cycling</h3>
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>Electronics</h3>
-                </div>
-                <div class="hobbie-item">
-                    <div class="hobbie-icon"></div>
-                    <h3>Photography</h3>
-                </div>
+            <div class="career-graph__axis" aria-hidden="true">
+              <div class="career-graph__track-line"></div>
+              <div class="career-graph__track-fill" id="career-track-fill"></div>
             </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <!-- <h2 class="section-title">Let's Work Together</h2> -->
-            <div class="contact">
-                <h3>Let's Build the Future Together</h3>
-                <p>Ready to collaborate on cutting-edge AI and robotics projects? Let's discuss how we can push the boundaries of technology.</p>
-                <div class="contact-links">
-                    <a href="https://www.linkedin.com/in/subashgautam/" class="contact-link">LinkedIn</a>
-                    <a href="https://github.com/gausubash" class="contact-link">GitHub</a>
-                    <a href="https://scholar.google.com/citations?user=LixjYDwAAAAJ&hl=en" class="contact-link">Research Papers</a>
+            <div class="career-graph__lanes">
+              <div class="career-lane" data-lane="research">
+                <span class="career-lane__label">Research</span>
+                <div class="career-lane__track">
+                  <div class="career-bar" data-start="2021" data-end="2025" data-index="2" tabindex="0" role="button">
+                    <span class="career-bar__label">CSIRO · PhD</span>
+                  </div>
+                  <div class="career-bar" data-start="2024" data-end="2026" data-index="0" tabindex="0" role="button">
+                    <span class="career-bar__label">RMIT</span>
+                  </div>
                 </div>
+              </div>
+              <div class="career-lane" data-lane="industry">
+                <span class="career-lane__label">Industry</span>
+                <div class="career-lane__track">
+                  <div class="career-bar career-bar--amber" data-start="2014" data-end="2017" data-index="1" tabindex="0" role="button">
+                    <span class="career-bar__label">CTO · Nepal</span>
+                  </div>
+                </div>
+              </div>
+              <div class="career-lane" data-lane="academic">
+                <span class="career-lane__label">Teaching</span>
+                <div class="career-lane__track">
+                  <div class="career-bar career-bar--teal" data-start="2020" data-end="2023" data-index="3" tabindex="0" role="button">
+                    <span class="career-bar__label">La Trobe</span>
+                  </div>
+                  <div class="career-bar" data-start="2024" data-end="2026" data-index="0" tabindex="0" role="button">
+                    <span class="career-bar__label">RMIT Labs</span>
+                  </div>
+                </div>
+              </div>
+              <div class="career-lane" data-lane="education">
+                <span class="career-lane__label">Education</span>
+                <div class="career-lane__track">
+                  <div class="career-bar career-bar--violet" data-start="2009" data-end="2014" data-index="5" tabindex="0" role="button">
+                    <span class="career-bar__label">BEng · Nepal</span>
+                  </div>
+                  <div class="career-bar career-bar--violet" data-start="2017" data-end="2019" data-index="4" tabindex="0" role="button">
+                    <span class="career-bar__label">MSc · 88% WAM</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <div class="career-graph__nodes">
+              <button type="button" class="career-node" data-index="5" data-year="2013" aria-label="2013 Robotics winner">
+                <span class="career-node__ring"></span>
+                <span class="career-node__yr">2013</span>
+              </button>
+              <button type="button" class="career-node" data-index="1" data-year="2014" aria-label="2014 Industry CTO">
+                <span class="career-node__ring"></span>
+                <span class="career-node__yr">2014</span>
+              </button>
+              <button type="button" class="career-node" data-index="4" data-year="2017" aria-label="2017 Masters">
+                <span class="career-node__ring"></span>
+                <span class="career-node__yr">2017</span>
+              </button>
+              <button type="button" class="career-node" data-index="3" data-year="2020" aria-label="2020 La Trobe">
+                <span class="career-node__ring"></span>
+                <span class="career-node__yr">2020</span>
+              </button>
+              <button type="button" class="career-node" data-index="2" data-year="2021" aria-label="2021 CSIRO">
+                <span class="career-node__ring"></span>
+                <span class="career-node__yr">2021</span>
+              </button>
+              <button type="button" class="career-node career-node--active" data-index="0" data-year="2024" aria-label="2024 RMIT">
+                <span class="career-node__ring"></span>
+                <span class="career-node__yr">2024</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="career-graph__details">
+            <article class="career-detail career-detail--active" data-index="0">
+              <div class="career-detail__badge career-detail__badge--rmit">Current</div>
+              <time>2024 — Present</time>
+              <h4>RMIT · Research &amp; teaching</h4>
+              <p class="career-detail__org">Vision pipelines · ROS2 labs</p>
+            </article>
+            <article class="career-detail" data-index="1" hidden>
+              <div class="career-detail__badge career-detail__badge--industry">Industry</div>
+              <time>2014 — 2017</time>
+              <h4>CTO · Kathmandu</h4>
+              <p class="career-detail__org">CCTV &amp; solar PV deployment</p>
+            </article>
+            <article class="career-detail" data-index="2" hidden>
+              <div class="career-detail__badge career-detail__badge--csiro">CSIRO · PhD</div>
+              <time>2021 — 2025</time>
+              <h4>4D vision · gDT-AM · patent</h4>
+              <p class="career-detail__org">4 RCIM papers · cold spray AM</p>
+            </article>
+            <article class="career-detail" data-index="3" hidden>
+              <div class="career-detail__badge career-detail__badge--latrobe">Teaching</div>
+              <time>2020 — 2023</time>
+              <h4>La Trobe · Sessional</h4>
+              <p class="career-detail__org">C/C++ · Python · embedded</p>
+            </article>
+            <article class="career-detail" data-index="4" hidden>
+              <div class="career-detail__badge career-detail__badge--latrobe">MSc</div>
+              <time>2017 — 2019</time>
+              <h4>Master of ICT · 88% WAM</h4>
+              <p class="career-detail__org">Golden Key · NRNA award</p>
+            </article>
+            <article class="career-detail" data-index="5" hidden>
+              <div class="career-detail__badge career-detail__badge--nepal">Origins</div>
+              <time>2009 — 2014</time>
+              <h4>BEng · National robotics winner</h4>
+              <p class="career-detail__org">Nepali Keto · IEEE solar MPPT</p>
+            </article>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>© 2025 Subash Gautam</p>
+    <!-- ═══ HIRE CTA ═══ -->
+    <section class="section section--hire section--impact snap-panel" id="contact" data-section="contact">
+      <div class="section__inner section__inner--center">
+        <div class="hire-block hire-block--compact reveal">
+          <p class="label label--light">Contact</p>
+          <h2>Let's build <em>production vision</em> together.</h2>
+          <div class="hire-block__cta">
+            <a href="mailto:subash.gautam.jobs@gmail.com" class="btn btn--primary btn--lg">Email</a>
+            <a href="https://www.linkedin.com/in/subashgautam/" class="btn btn--outline btn--lg" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="resume.html" class="btn btn--outline btn--lg">Resume</a>
+          </div>
         </div>
-    </footer>
-  <script src="scripts.js"></script>
+      </div>
+      <footer class="footer">
+        <p>© 2026 Subash Gautam</p>
+        <a href="#top">Back to top ↑</a>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- Mobile sticky CTA -->
+  <a href="mailto:subash.gautam.jobs@gmail.com" class="mobile-cta" id="mobile-cta">Hire me →</a>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox__x" aria-label="Close">&times;</button>
+    <button class="lightbox__prev" aria-label="Previous">‹</button>
+    <img class="lightbox__img" src="" alt="">
+    <button class="lightbox__next" aria-label="Next">›</button>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="hero-robot-3d.js?v=76"></script>
+  <script defer src="scripts.js?v=76"></script>
 </body>
 </html>
