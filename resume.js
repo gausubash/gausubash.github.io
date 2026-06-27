@@ -2,23 +2,53 @@
   'use strict';
 
   document.querySelector('.resume-hero')?.classList.add('visible');
+  document.querySelector('.resume-pitch')?.classList.add('visible');
+
+  const navLinks = document.querySelectorAll('.resume-sidebar nav a, .resume-mobile-nav a');
+
+  function getScrollOffset() {
+    const root = document.documentElement;
+    const headerH = parseFloat(getComputedStyle(root).getPropertyValue('--header-h')) || 68;
+    const mobileNav = document.querySelector('.resume-mobile-nav');
+    const navVisible = mobileNav && getComputedStyle(mobileNav).display !== 'none';
+    const navH = navVisible ? mobileNav.offsetHeight : 0;
+    return headerH + (navH > 0 ? navH + 12 : 12);
+  }
+
+  function scrollToSection(target, behavior) {
+    const y = target.getBoundingClientRect().top + window.scrollY - getScrollOffset();
+    window.scrollTo({ top: Math.max(0, y), behavior });
+  }
+
+  /* ─── Smooth in-page navigation ─── */
+  navLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href?.startsWith('#')) return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      scrollToSection(target, reducedMotion ? 'auto' : 'smooth');
+      history.replaceState(null, '', href);
+    });
+  });
 
   /* ─── Sidebar + mobile nav active section ─── */
   const sections = document.querySelectorAll('.resume-section[id]');
-  const sideLinks = document.querySelectorAll('.resume-sidebar nav a, .resume-mobile-nav a');
 
   const sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const id = entry.target.id;
-          sideLinks.forEach((link) => {
+          navLinks.forEach((link) => {
             link.classList.toggle('active', link.getAttribute('href') === '#' + id);
           });
         }
       });
     },
-    { threshold: 0.25, rootMargin: '-20% 0px -60% 0px' }
+    { threshold: 0.2, rootMargin: '-12% 0px -55% 0px' }
   );
 
   sections.forEach((s) => sectionObserver.observe(s));
@@ -27,13 +57,16 @@
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
       });
     },
-    { threshold: 0.1 }
+    { threshold: 0.08, rootMargin: '0px 0px -5% 0px' }
   );
 
-  document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+  document.querySelectorAll('.reveal:not(.visible)').forEach((el) => revealObserver.observe(el));
 
   /* ─── Expandable experience cards ─── */
   document.querySelectorAll('.exp-card__header').forEach((header) => {
@@ -130,9 +163,9 @@
   /* ─── Print ─── */
   document.getElementById('print-resume')?.addEventListener('click', () => window.print());
 
-  /* Open all experience cards for print */
   window.addEventListener('beforeprint', () => {
     document.querySelectorAll('.exp-card').forEach((c) => c.classList.add('open'));
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
   });
 
 })();

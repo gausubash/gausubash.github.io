@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Resume — Subash Gautam</title>
-  <meta name="description" content="Interactive CV of Subash Gautam — Digital Twin, Robotics, Computer Vision, Additive Manufacturing.">
+  <title>Subash Gautam — Research Engineer Resume</title>
+  <meta name="description" content="PhD Research Engineer — digital twins, computer vision, soft robotics, and AI floor-plan systems. CSIRO · RMIT · Melbourne. Open to research and engineering roles.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="design-tokens.css?v=80">
-  <link rel="stylesheet" href="resume.css?v=2">
+  <link rel="stylesheet" href="resume.css?v=4">
 </head>
-<body>
+<body class="resume-page">
   <div class="resume-bg" aria-hidden="true"></div>
 
   <header class="resume-topbar">
@@ -21,7 +21,7 @@
     </a>
     <div class="resume-topbar__actions">
       <button class="btn-sm" id="print-resume" type="button">Print / Save PDF</button>
-      <a href="index.html#epilogue" class="btn-sm btn-sm--fill">Contact me</a>
+      <a href="mailto:subash.gautam.jobs@gmail.com" class="btn-sm btn-sm--fill">Let's talk</a>
     </div>
   </header>
 
@@ -57,9 +57,10 @@
                onerror="this.src='photos/Convocation.JPG'">
         </div>
         <div class="resume-hero__body">
-          <p class="resume-hero__eyebrow">Interactive CV · Melbourne</p>
+          <p class="resume-hero__eyebrow">Open to research &amp; engineering roles · Melbourne</p>
           <h1>Subash <span>Gautam</span></h1>
-          <p class="resume-hero__role">Research Engineer · PhD Mechatronics</p>
+          <p class="resume-hero__role">Research Engineer · Computer Vision, AI &amp; Robotics</p>
+          <p class="resume-hero__pitch">I ship real-time vision, geometric digital twins, and AI pipelines on robotic cells—from additive manufacturing QA to soft robotics and architectural floor-plan intelligence.</p>
           <ul class="resume-hero__metrics" aria-label="Career highlights">
             <li><strong>5+</strong> yrs research</li>
             <li><strong>4</strong> RCIM papers</li>
@@ -68,10 +69,11 @@
           </ul>
           <div class="resume-hero__tags">
             <span>Digital Twin</span>
+            <span>Soft Robotics</span>
             <span>4D Reconstruction</span>
-            <span>Additive Manufacturing</span>
+            <span>Floor-Plan AI</span>
             <span>Computer Vision</span>
-            <span>Robotics</span>
+            <span>ROS2</span>
           </div>
           <div class="resume-hero__contact">
             <a href="mailto:subash.gautam.jobs@gmail.com">subash.gautam.jobs@gmail.com</a>
@@ -82,64 +84,98 @@
         </div>
       </header>
 
+      <section class="resume-pitch reveal visible" aria-label="Value proposition">
+        <div class="resume-pitch__inner">
+          <p class="resume-pitch__label">What I bring to your team</p>
+          <h2 class="resume-pitch__headline">Production-minded research engineer — <em>in-process QA</em>, not post-mortem inspection.</h2>
+          <ul class="resume-pitch__points">
+            <li>Real-time 4D reconstruction &amp; geometric digital twins on industrial robotic cells</li>
+            <li>Soft-robotics digital twins for simulation, sensing, and control-oriented modelling</li>
+            <li>AI vision pipelines that turn architectural floor plans into structured, queryable models</li>
+            <li>Patent co-inventor · peer-reviewed RCIM author · ROS2/C++ lab lead at RMIT</li>
+          </ul>
+          <div class="resume-pitch__actions">
+            <a href="mailto:subash.gautam.jobs@gmail.com" class="btn-sm btn-sm--fill">Email for opportunities</a>
+            <a href="https://scholar.google.com/citations?user=LixjYDwAAAAJ&amp;hl=en" class="btn-sm" target="_blank" rel="noopener">Google Scholar</a>
+            <a href="index.html" class="btn-sm">Live portfolio demo</a>
+          </div>
+        </div>
+      </section>
+
       <section id="summary" class="resume-section reveal">
         <h2 class="resume-section__title">Professional Summary</h2>
         <p class="resume-summary">
-          Research Engineer with a PhD in Mechatronics Engineering and 5+ years developing advanced 3D/4D reconstruction,
-          image processing algorithms, and machine-learning-driven defect detection for high-rate dynamic systems.
-          Proven track record delivering novel imaging pipelines, real-time reconstruction frameworks, and physics-guided
-          computer vision methods deployed on robotic and industrial platforms. Passionate about translating complex
-          imaging research into robust, commercial-ready solutions.
+          PhD Research Engineer (Mechatronics) with 5+ years building vision, AI, and digital-twin systems for
+          high-rate robotic manufacturing and applied robotics research. At CSIRO I delivered in-process 4D reconstruction,
+          geometric digital twins (gDT-AM), ML defect monitoring, and multi-sensor calibration methods now published in
+          <em>Robotics and Computer-Integrated Manufacturing</em> and protected by provisional patent 2025904901.
+          At RMIT I extend that work into soft-robotics digital twins and AI floor-plan vision pipelines, while leading
+          robotics labs in C++, Python, ROS2, and computer vision. I translate research into deployable pipelines—clear
+          documentation, measurable validation, and engineering teams can actually run.
         </p>
       </section>
 
       <section id="achievements" class="resume-section reveal">
-        <h2 class="resume-section__title">Selected Achievements</h2>
+        <h2 class="resume-section__title">Impact Highlights</h2>
         <div class="achieve-grid">
           <article class="achieve-card">
             <span class="achieve-card__num">01</span>
-            <p>Developed a real-time 4D reconstruction pipeline for continuous monitoring of dynamic additive manufacturing processes.</p>
+            <p>Built real-time <strong>4D reconstruction</strong> for continuous in-process monitoring on robotic additive manufacturing—geometry that updates as the part is built.</p>
           </article>
           <article class="achieve-card">
             <span class="achieve-card__num">02</span>
-            <p>Designed a geometric digital twin framework for in-process shape monitoring and deviation analysis.</p>
+            <p>Designed <strong>geometric digital twin (gDT-AM)</strong> and <strong>3D-DM²</strong> deviation mapping for shape monitoring and defect detection before scrap.</p>
           </article>
           <article class="achieve-card">
             <span class="achieve-card__num">03</span>
-            <p>Created a closed-form hand–eye calibration method for multi-sensor systems, significantly reducing calibration time.</p>
+            <p>Developing <strong>soft-robotics digital twins</strong> linking continuum robot geometry, sensing, and simulation for research and control workflows.</p>
           </article>
           <article class="achieve-card">
             <span class="achieve-card__num">04</span>
-            <p>Co-inventor on provisional patent 2025904901 — systems and methods for monitoring during manufacturing.</p>
+            <p>Built <strong>AI floor-plan vision</strong> pipelines—automated extraction from 2D architectural drawings into structured digital models for downstream design tools.</p>
+          </article>
+          <article class="achieve-card">
+            <span class="achieve-card__num">05</span>
+            <p>Co-inventor, provisional patent <strong>2025904901</strong> — in-process manufacturing monitoring systems.</p>
           </article>
           <article class="achieve-card achieve-card--wide">
-            <span class="achieve-card__num">05</span>
-            <p>Published multiple first-author papers in <em>Robotics and Computer-Integrated Manufacturing</em> on 4D reconstruction and imaging.</p>
+            <span class="achieve-card__num">06</span>
+            <p>First-author and co-author publications in <em>Robotics and Computer-Integrated Manufacturing</em>; closed-form multi-profiler hand–eye calibration adopted for faster cell deployment.</p>
           </article>
         </div>
       </section>
 
       <section id="projects" class="resume-section reveal">
-        <h2 class="resume-section__title">Research &amp; Projects</h2>
-        <p class="resume-section__lead">Click a project card to explore photos and details.</p>
+        <h2 class="resume-section__title">Selected Work</h2>
+        <p class="resume-section__lead">Evidence of research depth and engineering delivery — click each project for detail.</p>
 
-        <p class="project-showcase__label">Research &amp; industry</p>
+        <p class="project-showcase__label">Industry &amp; applied research</p>
         <div class="project-showcase">
           <div class="project-showcase__tabs">
             <button class="project-tab active" data-index="0" type="button">
               <span class="project-tab__year">2021–2025 · CSIRO</span>
-              <h4>Real-Time 4D Reconstruction &amp; Digital Twin</h4>
-              <p>Robotic additive manufacturing monitoring</p>
+              <h4>4D Reconstruction &amp; gDT-AM</h4>
+              <p>In-process QA on robotic AM</p>
             </button>
             <button class="project-tab" data-index="1" type="button">
+              <span class="project-tab__year">2024–Present · RMIT</span>
+              <h4>Soft Robotics Digital Twin</h4>
+              <p>Continuum robot modelling &amp; sensing</p>
+            </button>
+            <button class="project-tab" data-index="2" type="button">
+              <span class="project-tab__year">2024–Present · RMIT</span>
+              <h4>AI Floor-Plan Vision</h4>
+              <p>Architectural drawing → digital model</p>
+            </button>
+            <button class="project-tab" data-index="3" type="button">
               <span class="project-tab__year">2025</span>
               <h4>Hand–Eye Calibration</h4>
               <p>Multi 2D-profiler closed-form method</p>
             </button>
-            <button class="project-tab" data-index="2" type="button">
+            <button class="project-tab" data-index="4" type="button">
               <span class="project-tab__year">2024–Present</span>
-              <h4>RMIT Research &amp; Teaching</h4>
-              <p>Vision, ML, robotics labs</p>
+              <h4>Robotics Labs &amp; Mentoring</h4>
+              <p>ROS2 · C++ · vision at RMIT</p>
             </button>
           </div>
           <div class="project-showcase__panel">
@@ -150,33 +186,47 @@
               <div class="project-panel__gallery-dots"></div>
               <div class="project-panel__info">
                 <span class="project-panel__tag">Digital Twin · 4D Reconstruction · Defect Detection</span>
-                <p>Designed real-time 4D reconstruction for robotic AM, geometric digital twin (gDT-AM) for shape monitoring, in-process 3D deviation mapping (3D-DM²), and ML-driven defect segmentation on cold spray platforms.</p>
+                <p><strong>Impact:</strong> Live deposition geometry vs design on cold-spray robotic AM—catching deviation and defects during the build, not after. Includes gDT-AM shape monitoring, 3D-DM² temporal defect tracking, and ML segmentation on production-relevant data rates.</p>
                 <a href="https://arxiv.org/pdf/2511.05604" class="project-panel__link" target="_blank" rel="noopener">3D-DM² paper →</a>
               </div>
             </div>
             <div class="project-panel" data-index="1">
-              <div class="project-panel__visual">Closed-form · Two-stage · Single-plane artefact</div>
+              <div class="project-panel__visual project-panel__visual--soft">Soft robotics · Digital twin · Simulation</div>
               <div class="project-panel__info">
-                <span class="project-panel__tag">Robotics · Calibration · RCIM 2025</span>
-                <p>Streamlined robotic hand–eye calibration of multiple 2D laser profilers — rapid closed-form two-stage method that dramatically improves speed and accuracy for multi-sensor vision systems.</p>
-                <a href="https://doi.org/10.1016/j.rcim.2025.102984" class="project-panel__link" target="_blank" rel="noopener">Read paper →</a>
+                <span class="project-panel__tag">Soft Robotics · Digital Twin · RMIT</span>
+                <p><strong>Impact:</strong> Digital twin framework for soft/continuum robotic systems—linking deformable geometry, sensor feedback, and simulation-ready models for design iteration and control-oriented validation. Bridges materials-aware shape change with vision and robotics tooling used in advanced manufacturing research.</p>
               </div>
             </div>
             <div class="project-panel" data-index="2">
+              <div class="project-panel__visual project-panel__visual--plans">Floor plans · VLM · Document AI</div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Computer Vision · AI · Architectural Digitisation</span>
+                <p><strong>Impact:</strong> End-to-end vision pipeline converting 2D architectural floor plans into structured digital models—wall geometry, rooms, and symbols extracted for downstream BIM/design workflows. Combines classical image processing with modern VLM/ML components for robust parsing of real-world drawing sets.</p>
+              </div>
+            </div>
+            <div class="project-panel" data-index="3">
+              <div class="project-panel__visual">Closed-form · Two-stage · Multi-sensor</div>
+              <div class="project-panel__info">
+                <span class="project-panel__tag">Robotics · Calibration · RCIM 2025</span>
+                <p><strong>Impact:</strong> Streamlined robotic hand–eye calibration of multiple 2D laser profilers—rapid closed-form two-stage method that cuts calibration time and improves accuracy for multi-sensor vision cells.</p>
+                <a href="https://doi.org/10.1016/j.rcim.2025.102984" class="project-panel__link" target="_blank" rel="noopener">Read paper →</a>
+              </div>
+            </div>
+            <div class="project-panel" data-index="4">
               <div class="project-panel__gallery">
                 <img src="photos/Graduation_photo.png" alt="RMIT graduation" loading="lazy"
                      onerror="this.src='photos/Graduation.png'">
               </div>
               <div class="project-panel__gallery-dots"></div>
               <div class="project-panel__info">
-                <span class="project-panel__tag">RMIT · VLM · Robotics Education</span>
-                <p>Automated pipelines converting 2D architectural plans to structured digital models. Leading robotics labs mentoring students in C++, Python, ROS2, and computer vision.</p>
+                <span class="project-panel__tag">RMIT · ROS2 · Teaching</span>
+                <p><strong>Impact:</strong> Lead robotics laboratory sessions—mentoring students in C++, Python, ROS2, and computer vision through hypothesis-driven prototyping and system integration. Parallel research on vision/AI pipelines for architectural digitisation and soft robotics.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <p class="project-showcase__label">Early engineering</p>
+        <p class="project-showcase__label">Earlier engineering foundations</p>
         <!-- Early engineering showcase -->
         <div class="project-showcase project-showcase--reverse">
           <div class="project-showcase__tabs">
@@ -302,9 +352,9 @@
           <div class="exp-card__body">
             <div class="exp-card__inner">
               <ul>
-                <li>Developed automated image-processing pipelines for converting 2D architectural plans into structured digital models.</li>
-                <li>Led robotics laboratory sessions, mentoring students in C++, Python, ROS2, and computer vision.</li>
-                <li>Guided student engineering teams through hypothesis testing, prototyping, and system integration.</li>
+                <li>Lead <strong>soft-robotics digital twin</strong> research—deformable geometry, sensing, and simulation workflows for continuum robotic systems.</li>
+                <li>Built <strong>AI floor-plan vision</strong> pipelines that parse architectural drawings into structured digital models for design/BIM downstream use.</li>
+                <li>Lead robotics labs mentoring students in C++, Python, ROS2, and computer vision through production-style integration projects.</li>
               </ul>
             </div>
           </div>
@@ -360,29 +410,30 @@
             <h4>Image Processing &amp; Reconstruction</h4>
             <div class="skill-tags">
               <span>4D Reconstruction</span>
-              <span>Digital Twin</span>
+              <span>Geometric Digital Twin</span>
               <span>Deviation Mapping</span>
               <span>Multi-view Geometry</span>
               <span>Defect Detection</span>
-              <span>Surface Reconstruction</span>
+              <span>Floor-Plan Parsing</span>
             </div>
           </div>
           <div class="skill-group">
-            <h4>Software &amp; Algorithms</h4>
+            <h4>Software &amp; AI</h4>
             <div class="skill-tags">
               <span>C++</span>
               <span>Python</span>
               <span>ROS2</span>
               <span>OpenCV</span>
-              <span>OpenGL</span>
               <span>PyTorch</span>
-              <span>TensorFlow</span>
+              <span>VLM Pipelines</span>
+              <span>OpenGL</span>
               <span>Git</span>
             </div>
           </div>
           <div class="skill-group">
             <h4>Robotics &amp; Manufacturing</h4>
             <div class="skill-tags">
+              <span>Soft Robotics</span>
               <span>Hand–Eye Calibration</span>
               <span>Robotic AM</span>
               <span>Cold Spray AM</span>
@@ -496,6 +547,17 @@
             <p>NCIT ROBO Drive 2013 — National College of Information Technology, Nepal.</p>
           </div>
         </article>
+        </div>
+      </section>
+
+      <section class="resume-cta reveal" aria-label="Contact">
+        <div class="resume-cta__inner">
+          <h2>Let's build the next vision or robotics system together.</h2>
+          <p>Open to research engineer, computer vision, robotics, and digital-twin roles in Melbourne and remote-friendly teams.</p>
+          <div class="resume-cta__actions">
+            <a href="mailto:subash.gautam.jobs@gmail.com" class="btn-sm btn-sm--fill">subash.gautam.jobs@gmail.com</a>
+            <a href="https://www.linkedin.com/in/subashgautam/" class="btn-sm" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
         </div>
       </section>
 

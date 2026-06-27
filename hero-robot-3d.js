@@ -9,7 +9,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 const WRAP_ID = 'hero-robot-canvas-wrap';
 const STAGE_ID = 'hero-robot-stage';
 const PROXY_ID = 'robot-effector-proxy';
-const MODEL_URL = 'models/collada/abb_irb52_7_120.dae';
+const MODEL_URL = 'models/collada/abb_irb52_7_120_lite.dae';
 const MODEL_RESOURCE_PATH = 'models/collada/';
 const TEXTURE_BASE = 'models/textures/';
 const MODEL_SCALE = 2.2;
@@ -325,21 +325,21 @@ const DEFAULT_POSES = {
     photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
     beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
     effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0,
-    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+    effectorPhotoRotX: 180, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
   },
   show: {
     joint_1: -90, joint_2: -27, joint_3: 14, joint_4: 0, joint_5: -22, joint_6: 90,
     photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
     beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
-    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.004,
-    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0,
+    effectorPhotoRotX: 180, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
   },
   retract: {
     joint_1: 0, joint_2: 60, joint_3: -40, joint_4: 0, joint_5: 70, joint_6: 0,
     photoMountX: 0, photoMountY: 0.19, photoMountZ: -4.77,
     beltPhotoRotX: 90, beltPhotoRotY: 0, beltPhotoRotZ: -90,
-    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0.11,
-    effectorPhotoRotX: 0, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
+    effectorPhotoX: 0, effectorPhotoY: 0, effectorPhotoZ: 0,
+    effectorPhotoRotX: 180, effectorPhotoRotY: 0, effectorPhotoRotZ: 0,
   },
   place: {
     joint_1: 0, joint_2: 88, joint_3: -57, joint_4: 0, joint_5: 58, joint_6: 0,
@@ -416,19 +416,37 @@ const SCENE_FRAME_CONFIG = {
   beltPhotoRotZ: { min: -180, max: 180, step: 1, label: 'Belt rot Z°' },
   effectorPhotoX: { min: -0.3, max: 0.3, step: 0.001, label: 'Eff X' },
   effectorPhotoY: { min: -0.3, max: 0.3, step: 0.001, label: 'Eff Y' },
-  effectorPhotoZ: { min: -0.2, max: 0.2, step: 0.001, label: 'Eff Z' },
+  effectorPhotoZ: { min: -0.8, max: 0.8, step: 0.001, label: 'Eff Z' },
   effectorPhotoRotX: { min: -180, max: 180, step: 1, label: 'Eff rot X°' },
   effectorPhotoRotY: { min: -180, max: 180, step: 1, label: 'Eff rot Y°' },
   effectorPhotoRotZ: { min: -180, max: 180, step: 1, label: 'Eff rot Z°' },
 };
 
+const EFFECTOR_PHOTO_STAGES = new Set([
+  'lift', 'show', 'retract',
+]);
+const BELT_PHOTO_STAGES = new Set(['belt', 'belt-ready', 'belt-stop', 'place']);
+/** Stages where the photo lives on the belt (hand off from effector when carried). */
+const BELT_PHOTO_CARRY_STAGES = new Set([...BELT_PHOTO_STAGES, 'pick']);
+
 function beltTopSurfaceY() {
   return TREADMILL_DECK_Y + 0.008 * TREADMILL_SCALE;
 }
 
-function clampPhotoMountY(y) {
-  return Math.max(y ?? 0, beltTopSurfaceY() + 0.006);
+/** Local Y offset on the mount — sits the card on the belt deck, not inside it. */
+const BELT_PHOTO_LOCAL_Y = PHOTO_CARD_THICKNESS * 0.55;
+
+function beltPhotoMountY(override) {
+  const minY = beltTopSurfaceY() + BELT_PHOTO_LOCAL_Y;
+  return Math.max(override ?? minY, minY);
 }
+
+function clampPhotoMountY(y) {
+  return beltPhotoMountY(y);
+}
+
+/** Small world-space lift when picking so the card clears the belt surface. */
+const HANDOFF_LIFT_Y = 0.006;
 
 function beltTravelBounds() {
   const length = TREADMILL_LENGTH;
@@ -445,7 +463,7 @@ function defaultPhotoMountPosition() {
   const bounds = beltTravelBounds();
   return {
     photoMountX: 0,
-    photoMountY: clampPhotoMountY(TREADMILL_DECK_Y + 0.012 * TREADMILL_SCALE),
+    photoMountY: beltPhotoMountY(),
     photoMountZ: bounds.startZ,
   };
 }
@@ -458,11 +476,11 @@ function defaultSceneFrame() {
     photoMountZ: mount.photoMountZ,
     beltPhotoRotX: 90,
     beltPhotoRotY: 0,
-    beltPhotoRotZ: 0,
+    beltPhotoRotZ: -90,
     effectorPhotoX: 0,
     effectorPhotoY: 0,
-    effectorPhotoZ: -0.088,
-    effectorPhotoRotX: -90,
+    effectorPhotoZ: 0,
+    effectorPhotoRotX: 180,
     effectorPhotoRotY: 0,
     effectorPhotoRotZ: 0,
   };
@@ -478,7 +496,7 @@ function poseJointsOnly(pose) {
   return joints;
 }
 
-function sceneFrameFromPose(pose) {
+function sceneFrameFromPose(pose, stageName) {
   const frame = { ...defaultSceneFrame() };
   for (const key of SCENE_FRAME_FIELDS) {
     if (pose?.[key] !== undefined) frame[key] = pose[key];
@@ -507,7 +525,7 @@ function viewportForStage(viewport, pose) {
 function normalizePoseStore(store) {
   const next = {};
   for (const [name, pose] of Object.entries(store)) {
-    next[name] = { ...poseJointsOnly(pose), ...sceneFrameFromPose(pose) };
+    next[name] = { ...poseJointsOnly(pose), ...sceneFrameFromPose(pose, name) };
   }
   return next;
 }
@@ -666,12 +684,11 @@ function loadPoseStore(fileData = null) {
   const merged = clonePoses(DEFAULT_POSES);
   if (fileData?.poses && typeof fileData.poses === 'object') {
     Object.assign(merged, fileData.poses);
-  } else {
-    try {
-      const raw = localStorage.getItem(POSE_STORAGE_KEY);
-      if (raw) Object.assign(merged, JSON.parse(raw));
-    } catch (_) { /* ignore corrupt storage */ }
   }
+  try {
+    const raw = localStorage.getItem(POSE_STORAGE_KEY);
+    if (raw) Object.assign(merged, JSON.parse(raw));
+  } catch (_) { /* ignore corrupt storage */ }
   return normalizePoseStore(merged);
 }
 
@@ -1062,7 +1079,7 @@ function createPoseTeachPanel({
         controls.number.value = value;
       }
     }
-    const frame = sceneFrameFromPose(pose);
+    const frame = sceneFrameFromPose(pose, selectedStage());
     for (const [name, controls] of sceneFrameSliderMap) {
       const value = String(frame[name]);
       controls.range.value = value;
@@ -1263,10 +1280,14 @@ function createPoseTeachPanel({
   beltSpeedRoot.appendChild(beltSpeedRow);
 
   function loadSelectedStage() {
-    const pose = poseStore[selectedStage()] || poseStore.belt;
+    const stage = selectedStage();
+    const pose = poseStore[stage] || poseStore.belt;
     loadSlidersFromPose(pose);
-    applySlidersToArm();
     applySceneFrameSliders();
+    applySlidersToArm();
+    if (EFFECTOR_PHOTO_STAGES.has(stage)) {
+      applySceneFrameSliders();
+    }
   }
 
   function loadSelectedProfile() {
@@ -1444,17 +1465,37 @@ const LAYOUT_OVERRIDE_FALLBACK_TIERS = {
   widescreen: ['desktop', 'tablet', 'mobile'],
 };
 
-const EFFECTOR_PHOTO_STAGES = new Set([
-  'lift', 'show', 'retract',
-]);
-const BELT_PHOTO_STAGES = new Set(['belt', 'belt-ready', 'belt-stop', 'place']);
-
 /**
- * Default card lies in XY (image +Z). With gripper flipped 180° X on tool0, rotate −90° X
- * so the card lies in parent XZ with print facing outward along gripper +Z (cup side).
+ * Photo card default lies in XY (image normal +Z). Vacuum cups face along gripper +Z.
+ * Parent is eoat-vacuum-tip (cup contact plane). Rotate 180° X so print faces −Z
+ * (workpiece) and paper back faces the cups (+Z).
  */
-const EFFECTOR_PHOTO_ATTACH_POS = { x: 0, y: 0, z: -0.088 };
-const EFFECTOR_PHOTO_ATTACH_ROT = { x: -Math.PI / 2, y: 0, z: 0 };
+const EFFECTOR_PHOTO_ATTACH_POS = { x: 0, y: 0, z: 0 };
+const EFFECTOR_PHOTO_ATTACH_ROT = { x: Math.PI, y: 0, z: 0 };
+/** Above gripper meshes so the card is not drawn underneath the vacuum body. */
+const EFFECTOR_PHOTO_RENDER_ORDER = 12;
+
+function setEffectorPhotoRenderOrder(photo, order = EFFECTOR_PHOTO_RENDER_ORDER) {
+  if (!photo) return;
+  photo.renderOrder = order;
+  photo.traverse((child) => {
+    if (child.isMesh) child.renderOrder = order;
+  });
+}
+
+function alignEffectorPhotoToGripper(photo) {
+  if (!photo) return;
+  photo.position.set(
+    EFFECTOR_PHOTO_ATTACH_POS.x,
+    EFFECTOR_PHOTO_ATTACH_POS.y,
+    EFFECTOR_PHOTO_ATTACH_POS.z,
+  );
+  photo.rotation.set(
+    EFFECTOR_PHOTO_ATTACH_ROT.x,
+    EFFECTOR_PHOTO_ATTACH_ROT.y,
+    EFFECTOR_PHOTO_ATTACH_ROT.z,
+  );
+}
 
 function reportHero3dFailure(reason) {
   console.error('[hero-robot-3d]', reason);
@@ -1513,6 +1554,13 @@ function findNodeByName(root, name) {
 
 function findEffectorNode(root) {
   return findNodeByName(root, 'tool0') || findNodeByName(root, 'link_6');
+}
+
+/** Cup contact plane — end of vacuum pump array (EOAT frame). */
+function findVacuumTipNode(root) {
+  return findNodeByName(root, 'eoat-vacuum-tip')
+    || findNodeByName(root, 'eoat-gripper')
+    || findEffectorNode(root);
 }
 
 function noise2(x, y) {
@@ -1725,15 +1773,27 @@ async function applyPhotoGroupTexture(photoGroup, imageUrl) {
 }
 
 function syncEffectorPhotoTextureFromBelt(beltPhoto, effectorPhoto) {
-  if (!beltPhoto || !effectorPhoto) return;
+  if (!beltPhoto || !effectorPhoto) return false;
   const srcMat = photoGroupImageMaterial(beltPhoto);
   const dstMat = photoGroupImageMaterial(effectorPhoto);
-  if (!srcMat?.map || !dstMat) return;
+  if (!dstMat) return false;
+  if (!srcMat?.map) return false;
   dstMat.map = srcMat.map;
   dstMat.color.copy(srcMat.color);
   dstMat.needsUpdate = true;
   effectorPhoto.userData.imageUrl = beltPhoto.userData.imageUrl;
   effectorPhoto.userData.textureToken = beltPhoto.userData.textureToken;
+  return true;
+}
+
+async function ensurePhotoGroupTexture(photoGroup) {
+  if (!photoGroup) return false;
+  const mat = photoGroupImageMaterial(photoGroup);
+  if (mat?.map) return true;
+  const url = photoGroup.userData.pendingUrl ?? photoGroup.userData.imageUrl;
+  if (!url) return false;
+  await applyPhotoGroupTexture(photoGroup, url);
+  return Boolean(photoGroupImageMaterial(photoGroup)?.map);
 }
 
 function shuffleArray(items) {
@@ -1833,6 +1893,9 @@ function createPhotoPayload(imageUrl, { width = 0.22, aspect = 1.35, showBack = 
     transparent: true,
     depthWrite: true,
     alphaMap: roundedAlpha,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
   });
   const imagePlane = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMat);
   imagePlane.position.z = half;
@@ -1872,30 +1935,106 @@ function createPhotoPayload(imageUrl, { width = 0.22, aspect = 1.35, showBack = 
   return group;
 }
 
-/** Lie on belt image-down (print against belt), white paper facing up toward vacuum cups. */
-const BELT_PHOTO_ROTATION = { x: Math.PI / 2, y: 0, z: 0 };
+/** Lie flat on belt (print down), matching pose beltPhotoRot 90 / 0 / -90. */
+const BELT_PHOTO_ROTATION = { x: Math.PI / 2, y: 0, z: -Math.PI / 2 };
 
-const _beltPhotoWorldQ = new THREE.Quaternion();
-const _effectorParentWorldQ = new THREE.Quaternion();
-const _effectorPhotoLocalQ = new THREE.Quaternion();
+const _handoffWorldPos = new THREE.Vector3();
+const _handoffWorldQuat = new THREE.Quaternion();
+const _handoffParentQuat = new THREE.Quaternion();
 
-/** Match effector card world orientation to belt card at contact (preserves XZ plane on belt). */
-function syncEffectorPhotoFromBelt(beltPhoto, effectorPhoto) {
+function ensureBeltPhotoOnSurface(treadmillRig, beltPhoto) {
+  const mount = treadmillRig?.userData?.photoMount;
+  if (!mount || !beltPhoto) return;
+  mount.position.y = beltPhotoMountY(mount.position.y);
+  beltPhoto.position.y = BELT_PHOTO_LOCAL_Y;
+}
+
+/** Preserve belt card world pose on the gripper at pick contact (no fixed-offset snap). */
+function syncEffectorPhotoWorldFromBelt(beltPhoto, effectorPhoto, liftY = HANDOFF_LIFT_Y) {
   if (!beltPhoto || !effectorPhoto?.parent) return;
   beltPhoto.updateWorldMatrix(true, false);
   effectorPhoto.parent.updateWorldMatrix(true, false);
-  beltPhoto.getWorldQuaternion(_beltPhotoWorldQ);
-  effectorPhoto.parent.getWorldQuaternion(_effectorParentWorldQ);
-  _effectorPhotoLocalQ.copy(_effectorParentWorldQ).invert().multiply(_beltPhotoWorldQ);
-  effectorPhoto.quaternion.copy(_effectorPhotoLocalQ);
+  beltPhoto.getWorldPosition(_handoffWorldPos);
+  beltPhoto.getWorldQuaternion(_handoffWorldQuat);
+  _handoffWorldPos.y += liftY;
+  effectorPhoto.parent.worldToLocal(_handoffWorldPos);
+  effectorPhoto.position.copy(_handoffWorldPos);
+  effectorPhoto.parent.getWorldQuaternion(_handoffParentQuat);
+  effectorPhoto.quaternion.copy(_handoffParentQuat.invert().multiply(_handoffWorldQuat));
 }
 
-function handoffBeltToEffector(beltPhoto, effectorPhoto) {
-  syncEffectorPhotoFromBelt(beltPhoto, effectorPhoto);
-  syncEffectorPhotoTextureFromBelt(beltPhoto, effectorPhoto);
-  if (effectorPhoto) effectorPhoto.userData.carriedFromBelt = true;
+function finishHandoffBeltToEffector(beltPhoto, effectorPhoto, { dispatchEvent = true } = {}) {
+  syncEffectorPhotoWorldFromBelt(beltPhoto, effectorPhoto);
+  const synced = syncEffectorPhotoTextureFromBelt(beltPhoto, effectorPhoto);
+  setEffectorPhotoRenderOrder(effectorPhoto);
+  effectorPhoto.userData.carriedFromBelt = true;
+  effectorPhoto.visible = true;
   if (beltPhoto) beltPhoto.visible = false;
-  if (effectorPhoto) effectorPhoto.visible = true;
+  if (dispatchEvent) {
+    window.dispatchEvent(new CustomEvent('hero-photo-handoff', {
+      detail: { synced, imageUrl: effectorPhoto.userData.imageUrl ?? null },
+    }));
+  }
+  return synced;
+}
+
+async function handoffBeltToEffector(beltPhoto, effectorPhoto, treadmillRig, { awaitTexture = true, dispatchEvent = true } = {}) {
+  if (!effectorPhoto) return false;
+
+  ensureBeltPhotoOnSurface(treadmillRig, beltPhoto);
+
+  if (awaitTexture) {
+    await ensurePhotoGroupTexture(beltPhoto);
+    let synced = finishHandoffBeltToEffector(beltPhoto, effectorPhoto, { dispatchEvent });
+    if (!synced && beltPhoto?.userData?.imageUrl) {
+      await applyPhotoGroupTexture(effectorPhoto, beltPhoto.userData.imageUrl);
+      synced = Boolean(photoGroupImageMaterial(effectorPhoto)?.map);
+      if (dispatchEvent) {
+        window.dispatchEvent(new CustomEvent('hero-photo-handoff', {
+          detail: { synced, imageUrl: effectorPhoto.userData.imageUrl ?? null },
+        }));
+      }
+    }
+    return synced;
+  }
+
+  const synced = finishHandoffBeltToEffector(beltPhoto, effectorPhoto, { dispatchEvent });
+  void ensurePhotoGroupTexture(beltPhoto).then(async () => {
+    if (!syncEffectorPhotoTextureFromBelt(beltPhoto, effectorPhoto) && beltPhoto?.userData?.imageUrl) {
+      await applyPhotoGroupTexture(effectorPhoto, beltPhoto.userData.imageUrl);
+    }
+  });
+  return synced;
+}
+
+function shouldApplyEffectorSceneFrame(effectorPhoto, stageName) {
+  if (!effectorPhoto) return false;
+  if (!effectorPhoto.userData.carriedFromBelt) return true;
+  return Boolean(stageName && EFFECTOR_PHOTO_STAGES.has(stageName));
+}
+
+function syncPhotoCarryForStage(stageName, beltPhoto, effectorPhoto, treadmillRig) {
+  if (!beltPhoto || !effectorPhoto || !stageName) return;
+
+  const carried = Boolean(effectorPhoto.userData.carriedFromBelt);
+
+  if (EFFECTOR_PHOTO_STAGES.has(stageName)) {
+    if (!carried) {
+      if (POSE_TEACH_MODE) {
+        effectorPhoto.userData.carriedFromBelt = true;
+        effectorPhoto.visible = true;
+        setEffectorPhotoRenderOrder(effectorPhoto);
+        void ensurePhotoGroupTexture(beltPhoto).then(() => {
+          syncEffectorPhotoTextureFromBelt(beltPhoto, effectorPhoto);
+        });
+      } else {
+        handoffBeltToEffector(beltPhoto, effectorPhoto, treadmillRig, { awaitTexture: false });
+      }
+    }
+  } else if (BELT_PHOTO_CARRY_STAGES.has(stageName) && carried) {
+    handoffEffectorToBelt(beltPhoto, effectorPhoto);
+    ensureBeltPhotoOnSurface(treadmillRig, beltPhoto);
+  }
 }
 
 function handoffEffectorToBelt(beltPhoto, effectorPhoto) {
@@ -1910,30 +2049,21 @@ function resetEffectorPhotoPulse(effectorPhoto) {
   const base = effectorPhoto.userData.baseScale ?? effectorPhoto.scale.x ?? 1;
   effectorPhoto.userData.pulseMult = 1;
   effectorPhoto.scale.setScalar(base);
-  if (effectorPhoto.renderOrder > 2) effectorPhoto.renderOrder = 2;
+  setEffectorPhotoRenderOrder(effectorPhoto);
 }
 
 function attachEffectorPhoto(robot, imageUrl) {
-  const gripper = findNodeByName(robot, 'eoat-gripper');
-  const parent = gripper || findEffectorNode(robot);
+  const vacuumTip = findVacuumTipNode(robot);
+  const parent = vacuumTip || findEffectorNode(robot);
   if (!parent) return null;
   const photo = createPhotoPayload(imageUrl, {
     width: EFFECTOR_PHOTO_WIDTH,
     aspect: 1.35,
     showBack: true,
   });
-  if (gripper) {
-    photo.position.set(
-      EFFECTOR_PHOTO_ATTACH_POS.x,
-      EFFECTOR_PHOTO_ATTACH_POS.y,
-      EFFECTOR_PHOTO_ATTACH_POS.z,
-    );
-    photo.rotation.set(
-      EFFECTOR_PHOTO_ATTACH_ROT.x,
-      EFFECTOR_PHOTO_ATTACH_ROT.y,
-      EFFECTOR_PHOTO_ATTACH_ROT.z,
-    );
-    photo.renderOrder = 2;
+  if (findNodeByName(robot, 'eoat-vacuum-tip') || findNodeByName(robot, 'eoat-gripper')) {
+    alignEffectorPhotoToGripper(photo);
+    setEffectorPhotoRenderOrder(photo);
   } else {
     photo.scale.setScalar(1 / MODEL_SCALE);
     photo.position.set(0, 0.09 / MODEL_SCALE, 0.1 / MODEL_SCALE);
@@ -1950,7 +2080,7 @@ function attachEffectorPhoto(robot, imageUrl) {
 function createBeltPhoto(parent, imageUrl) {
   const photo = createPhotoPayload(imageUrl, { width: BELT_PHOTO_WIDTH, aspect: 1.35 });
   photo.rotation.set(BELT_PHOTO_ROTATION.x, BELT_PHOTO_ROTATION.y, BELT_PHOTO_ROTATION.z);
-  photo.position.set(0, 0.004, 0);
+  photo.position.set(0, BELT_PHOTO_LOCAL_Y, 0);
   photo.renderOrder = 8;
   photo.traverse((child) => {
     if (child.isMesh) child.renderOrder = 10;
@@ -2069,7 +2199,7 @@ function createTreadmill(envMap) {
 
   const photoMount = new THREE.Group();
   photoMount.name = 'treadmill-photo-mount';
-  photoMount.position.set(0, clampPhotoMountY(TREADMILL_DECK_Y + 0.012 * s), length / 2 - 0.35 * s);
+  photoMount.position.set(0, beltPhotoMountY(), length / 2 - 0.35 * s);
 
   group.add(belt, railL, railR, rollerRobot, rollerFar, photoMount);
   group.userData.beltTexture = beltTex;
@@ -2145,18 +2275,25 @@ function attachBeltToRobot(robotMountRig, treadmillRig, layout = beltLayoutStore
 }
 
 function updatePhotoStage(stage, beltPhoto, effectorPhoto) {
+  const carried = Boolean(effectorPhoto?.userData?.carriedFromBelt);
+
   if (stage === 'pick') {
     if (beltPhoto) beltPhoto.visible = true;
     if (effectorPhoto) effectorPhoto.visible = false;
     return;
   }
   if (stage === 'place') {
-    if (beltPhoto) beltPhoto.visible = false;
-    if (effectorPhoto) effectorPhoto.visible = true;
+    if (beltPhoto) beltPhoto.visible = !carried;
+    if (effectorPhoto) effectorPhoto.visible = carried;
+    return;
+  }
+  if (EFFECTOR_PHOTO_STAGES.has(stage)) {
+    if (beltPhoto) beltPhoto.visible = !carried;
+    if (effectorPhoto) effectorPhoto.visible = carried;
     return;
   }
   if (beltPhoto) beltPhoto.visible = BELT_PHOTO_STAGES.has(stage);
-  if (effectorPhoto) effectorPhoto.visible = EFFECTOR_PHOTO_STAGES.has(stage);
+  if (effectorPhoto) effectorPhoto.visible = false;
 }
 
 function placeModelOnFloor(model) {
@@ -2358,6 +2495,9 @@ const EOAT_GRIPPER_ATTACH_ROT = { x: Math.PI, y: 0, z: 0 };
 /** Push EOAT along tool0 +Z so cups clear link_6 (meters, tool0 frame). */
 const EOAT_GRIPPER_ATTACH_OFFSET = { x: 0, y: 0, z: 0.05 };
 
+/** Open face of suction cups along gripper +Z (matches addLargeSuctionPump geometry). */
+const EOAT_VACUUM_CUP_TIP_Z = 0.09;
+
 function createEndEffectorGripper(envMap, { digital = false } = {}) {
   const group = new THREE.Group();
   group.name = 'eoat-gripper';
@@ -2478,6 +2618,12 @@ function createEndEffectorGripper(envMap, { digital = false } = {}) {
   });
 
   group.add(manifold, trunkA, trunkB);
+
+  const vacuumTip = new THREE.Object3D();
+  vacuumTip.name = 'eoat-vacuum-tip';
+  vacuumTip.position.set(0, 0, EOAT_VACUUM_CUP_TIP_Z);
+  group.add(vacuumTip);
+
   return group;
 }
 
@@ -2496,7 +2642,35 @@ function attachEffectorGripper(robot, envMap, { digital = false } = {}) {
     EOAT_GRIPPER_ATTACH_OFFSET.z,
   );
   tool0.add(gripper);
+  ensureGripperVisible(gripper);
   return gripper;
+}
+
+function isEffectorPhotoNode(object) {
+  let node = object;
+  while (node) {
+    if (node.name === 'photo-payload') return true;
+    node = node.parent;
+  }
+  return false;
+}
+
+/** Reset gripper meshes to fully opaque (teach + after legacy opacity fades). */
+function ensureGripperVisible(gripper) {
+  if (!gripper) return;
+  gripper.visible = true;
+  gripper.traverse((child) => {
+    if (isEffectorPhotoNode(child)) return;
+    if (!child.isMesh || !child.material) return;
+    const mats = Array.isArray(child.material) ? child.material : [child.material];
+    for (const mat of mats) {
+      mat.transparent = false;
+      mat.opacity = 1;
+      mat.depthWrite = true;
+      mat.needsUpdate = true;
+      delete mat.userData._gripperBaseOpacity;
+    }
+  });
 }
 
 function attachAxisTriad(target, size, position = null) {
@@ -2680,7 +2854,7 @@ function initHeroRobot3D() {
       }
       stopPhotoPulseTween();
       const state = { mult: effectorPhoto.userData.pulseMult ?? 1 };
-      effectorPhoto.renderOrder = 12;
+      setEffectorPhotoRenderOrder(effectorPhoto, EFFECTOR_PHOTO_RENDER_ORDER + 4);
       photoPulseTween = new TWEEN.Tween(state)
         .to({ mult: targetMult }, duration)
         .easing(TWEEN.Easing.Cubic.InOut)
@@ -2707,7 +2881,7 @@ function initHeroRobot3D() {
     const duration = armDurationMs();
     await tweenEffectorPhotoPulseMult(SHOW_PHOTO_PULSE_SCALE, duration, 'expand');
     await tweenEffectorPhotoPulseMult(1, duration, 'contract');
-    if (effectorPhoto) effectorPhoto.renderOrder = 2;
+    if (effectorPhoto) setEffectorPhotoRenderOrder(effectorPhoto);
     window.dispatchEvent(new CustomEvent('hero-photo-pulse', {
       detail: { phase: 'complete', target: 'pulse' },
     }));
@@ -2759,7 +2933,8 @@ function initHeroRobot3D() {
   function resize() {
     const vp = readViewport();
     if (vp.width < 1 || vp.height < 1) return;
-    renderer.setSize(vp.width, vp.height, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(vp.width, vp.height, true);
     layoutScene(vp);
   }
 
@@ -2793,7 +2968,7 @@ function initHeroRobot3D() {
     }
   }
 
-  function applySceneFrame(frame, stageName) {
+  function applySceneFrame(frame, stageName, { deferAnimatedHandoff = false } = {}) {
     if (!treadmillRig || !frame) return;
     const f = { ...defaultSceneFrame(), ...frame };
     const bounds = beltTravelBounds();
@@ -2833,7 +3008,19 @@ function initHeroRobot3D() {
       );
     }
 
-    if (effectorPhoto && !effectorPhoto.userData.carriedFromBelt) {
+    if (beltPhoto && stageName && BELT_PHOTO_CARRY_STAGES.has(stageName)) {
+      ensureBeltPhotoOnSurface(treadmillRig, beltPhoto);
+    }
+
+    if (stageName) {
+      const skipCarrySync = deferAnimatedHandoff && (stageName === 'pick' || stageName === 'place');
+      if (!skipCarrySync) {
+        syncPhotoCarryForStage(stageName, beltPhoto, effectorPhoto, treadmillRig);
+      }
+    }
+
+    const applyEffectorFrame = shouldApplyEffectorSceneFrame(effectorPhoto, stageName);
+    if (applyEffectorFrame) {
       effectorPhoto.position.set(f.effectorPhotoX, f.effectorPhotoY, f.effectorPhotoZ);
       effectorPhoto.rotation.set(
         THREE.MathUtils.degToRad(f.effectorPhotoRotX),
@@ -2843,6 +3030,10 @@ function initHeroRobot3D() {
     }
 
     if (stageName) updatePhotoStage(stageName, beltPhoto, effectorPhoto);
+
+    if (robotModel) {
+      ensureGripperVisible(findNodeByName(robotModel, 'eoat-gripper'));
+    }
   }
 
   function readSceneFrameFromRig() {
@@ -2900,13 +3091,22 @@ function initHeroRobot3D() {
 
     const pose = poseStore[stageName] || poseStore.belt;
     const duration = armDurationMs();
-    applySceneFrame(sceneFrameFromPose(pose), stageName);
+    applySceneFrame(sceneFrameFromPose(pose, stageName), stageName, { deferAnimatedHandoff: true });
     updatePhotoStage(stageName, beltPhoto, effectorPhoto);
 
     if (stageName === 'pick') {
-      applyPose(pose, duration, () => handoffBeltToEffector(beltPhoto, effectorPhoto));
+      applyPose(pose, duration, () => {
+        void handoffBeltToEffector(beltPhoto, effectorPhoto, treadmillRig).then(() => {
+          const liftPose = poseStore.lift || poseStore.belt;
+          applySceneFrame(sceneFrameFromPose(liftPose, 'lift'), 'lift');
+        });
+      });
     } else if (stageName === 'place') {
-      applyPose(pose, duration, () => handoffEffectorToBelt(beltPhoto, effectorPhoto));
+      applyPose(pose, duration, () => {
+        handoffEffectorToBelt(beltPhoto, effectorPhoto);
+        ensureBeltPhotoOnSurface(treadmillRig, beltPhoto);
+        updatePhotoStage(stageName, beltPhoto, effectorPhoto);
+      });
     } else {
       applyPose(pose, duration);
     }
@@ -2919,7 +3119,7 @@ function initHeroRobot3D() {
     }
   });
 
-  window.addEventListener('hero-belt-command', (event) => {
+  window.addEventListener('hero-belt-command', async (event) => {
     if (!treadmillRig) return;
     const travel = treadmillRig.userData.beltTravel;
     if (!travel || travel.mode !== 'idle') return;
@@ -2934,7 +3134,7 @@ function initHeroRobot3D() {
       mount.position.z = travel.startZ;
       if (beltPhoto) {
         beltPhoto.visible = true;
-        void assignCyclePhoto(beltPhoto, effectorPhoto);
+        await assignCyclePhoto(beltPhoto, effectorPhoto);
       }
     } else {
       mount.position.z = travel.pickZ;
@@ -3023,7 +3223,7 @@ function initHeroRobot3D() {
       initialBeltLayout: beltLayoutStore,
     }) : poseStore;
     applyPoseImmediate(poseStore.belt);
-    applySceneFrame(sceneFrameFromPose(poseStore.belt), 'belt');
+    applySceneFrame(sceneFrameFromPose(poseStore.belt, 'belt'), 'belt');
     const vp = readViewport();
     placeRobot(robotModel);
     if (POSE_TEACH_MODE) {
@@ -3031,6 +3231,12 @@ function initHeroRobot3D() {
     }
     attachEffectorGripper(robotModel, scene.environment);
     effectorPhoto = attachEffectorPhoto(robotModel, HERO_PHOTO_URL);
+    if (POSE_TEACH_MODE) {
+      ensureGripperVisible(findNodeByName(robotModel, 'eoat-gripper'));
+      const gripper = findNodeByName(robotModel, 'eoat-gripper');
+      if (gripper) attachAxisTriad(gripper, 0.12);
+    }
+    applySceneFrame(sceneFrameFromPose(poseStore.belt, 'belt'), 'belt');
     if (POSE_TEACH_MODE && effectorPhoto) {
       attachAxisTriad(effectorPhoto, 0.1);
     }
@@ -3042,8 +3248,8 @@ function initHeroRobot3D() {
       window.__heroPoseTeach.updateLivePositions = updateScenePositionReadouts;
     }
 
-    const effector = findEffectorNode(robotModel);
-    if (POSE_TEACH_MODE) {
+    const effector = findVacuumTipNode(robotModel);
+    if (POSE_TEACH_MODE && effector) {
       attachAxisTriad(effector, 0.22 * 0.3);
     }
     effectorNode = effector;
@@ -3066,7 +3272,12 @@ function initHeroRobot3D() {
     layoutOverrideStore = stores.layouts;
     treadmillBeltSpeed = stores.beltSpeed;
     Object.assign(beltLayoutStore, stores.beltLayout);
-    bootstrapRobotScene(collada);
+    try {
+      bootstrapRobotScene(collada);
+    } catch (err) {
+      reportHero3dFailure(err);
+      showCssFallback(stage);
+    }
   }).catch((err) => {
     reportHero3dFailure(err);
     try {
