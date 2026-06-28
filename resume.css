@@ -154,6 +154,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   font-size: var(--btn-font);
   font-weight: 600;
   padding: var(--btn-py) var(--btn-px);

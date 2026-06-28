@@ -160,9 +160,6 @@
     });
   }
 
-  /* ─── Print ─── */
-  document.getElementById('print-resume')?.addEventListener('click', () => window.print());
-
   window.addEventListener('beforeprint', () => {
     document.querySelectorAll('.exp-card').forEach((c) => c.classList.add('open'));
     document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));

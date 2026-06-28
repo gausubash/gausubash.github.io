@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "savedAt": "2026-06-27T09:44:13.365Z",
+  "savedAt": "2026-06-28T01:44:43.765Z",
   "poses": {
     "belt": {
       "joint_1": 0,
@@ -190,7 +190,7 @@
       "cameraDepthRatio": 1.1,
       "cameraFraming": 1.85,
       "cameraPullback": 0.59,
-      "screenShiftPx": 90,
+      "screenShiftPx": 65,
       "fov": 20,
       "padding": 1.02,
       "sceneYawDeg": 0,
@@ -200,14 +200,14 @@
       "robotOffsetZ": 2.86
     },
     "tablet-landscape": {
-      "robotSizeFactor": 0.39,
-      "frameBias": 0.13,
-      "cameraHeightRatio": 1.04,
-      "cameraDepthRatio": 1.1,
-      "cameraFraming": 2,
-      "cameraPullback": 0.59,
+      "robotSizeFactor": 0.2,
+      "frameBias": -3,
+      "cameraHeightRatio": 0.21,
+      "cameraDepthRatio": 0.46,
+      "cameraFraming": 1.45,
+      "cameraPullback": 0.5,
       "screenShiftPx": 90,
-      "fov": 20,
+      "fov": 44,
       "padding": 1.02,
       "sceneYawDeg": 0,
       "scenePushZ": -6.18,
@@ -232,7 +232,7 @@
       "robotOffsetZ": -16.52
     },
     "desktop-landscape": {
-      "robotSizeFactor": 0.42,
+      "robotSizeFactor": 0.41,
       "frameBias": 0.13,
       "cameraHeightRatio": 1.04,
       "cameraDepthRatio": 1.1,
